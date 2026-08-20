@@ -4,6 +4,12 @@ import { nanoid, todayISO } from '../utils.js';
 
 const FREQUENCIES = ['daily', 'fortnightly', 'weekly', 'monthly'];
 
+function loggedCount(log, target) {
+  const value = Number(log?.value);
+  if (!Number.isFinite(value) || value <= 0) return 0;
+  return Math.min(target, Math.max(1, Math.round(value)));
+}
+
 export default function HabitsPage() {
   const [habits, setHabits] = useState([]);
   const [todayLogs, setTodayLogs] = useState({});
@@ -56,19 +62,35 @@ export default function HabitsPage() {
     loadHabits();
   }
 
-  async function handleLogValue(habit, value) {
+  async function handleLogHabit(habit) {
     const existing = todayLogs[habit.id];
+    const currentValue = loggedCount(existing, habit.target);
+    if (currentValue >= habit.target) return;
+
     if (existing) {
-      await db.habitLogs.update(existing.id, { value: parseFloat(value) });
+      await db.habitLogs.update(existing.id, { value: currentValue + 1 });
     } else {
       await db.habitLogs.add({
         id: nanoid(),
         habitId: habit.id,
-        value: parseFloat(value),
+        value: 1,
         date: today
       });
     }
-    loadTodayLogs();
+    await loadTodayLogs();
+  }
+
+  async function handleUndoHabit(habit) {
+    const existing = todayLogs[habit.id];
+    if (!existing) return;
+
+    const currentValue = loggedCount(existing, habit.target);
+    if (currentValue <= 1) {
+      await db.habitLogs.delete(existing.id);
+    } else {
+      await db.habitLogs.update(existing.id, { value: currentValue - 1 });
+    }
+    await loadTodayLogs();
   }
 
   return (
@@ -180,27 +202,51 @@ export default function HabitsPage() {
         <ul className="habit-list">
           {habits.map(h => {
             const log = todayLogs[h.id];
-            const pct = log ? Math.min(100, Math.round((log.value / h.target) * 100)) : 0;
+            const count = loggedCount(log, h.target);
+            const isComplete = count >= h.target;
             return (
               <li key={h.id}>
-                <div className="habit-row">
-                  <span className="habit-name">{h.name}</span>
-                  <span className="habit-target">Target {h.target} · {h.frequency ?? 'daily'}</span>
-                  <input
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    placeholder="0"
-                    defaultValue={log?.value ?? ''}
-                    key={log?.id ?? h.id}
-                    onBlur={e => handleLogValue(h, e.target.value || 0)}
-                    className="habit-input"
-                    aria-label={`Progress for ${h.name}`}
-                  />
-                  <button type="button" className="btn-sm danger" onClick={() => handleArchive(h.id)}>Archive</button>
-                </div>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ '--progress-scale': pct / 100 }} />
+                <div className="habit-card-row">
+                  <button
+                    type="button"
+                    className={'habit-tap-card' + (isComplete ? ' complete' : '')}
+                    onClick={() => handleLogHabit(h)}
+                    aria-pressed={isComplete}
+                    aria-label={`${h.name}: ${count} of ${h.target} completed today`}
+                  >
+                    <span className="habit-card-copy">
+                      <span className="habit-name">{h.name}</span>
+                      <span className="habit-target">Target {h.target} · {h.frequency ?? 'daily'}</span>
+                    </span>
+                    {h.target > 1 && (
+                      <span className="segmented-progress" role="img" aria-label={`${count} of ${h.target} completed`}>
+                        {Array.from({ length: h.target }, (_, index) => (
+                          <span
+                            key={index}
+                            className={'progress-segment' + (index < count ? ' filled' : '')}
+                            aria-hidden="true"
+                          />
+                        ))}
+                      </span>
+                    )}
+                  </button>
+                  <div className="habit-card-actions">
+                    {count > 0 && (
+                      <button
+                        type="button"
+                        className="habit-undo"
+                        onClick={() => handleUndoHabit(h)}
+                        aria-label={`Undo last ${h.name} log`}
+                        title="Undo last log"
+                      >
+                        <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M9 7 5 11l4 4" />
+                          <path d="M5 11h8a6 6 0 0 1 0 12h-2" />
+                        </svg>
+                      </button>
+                    )}
+                    <button type="button" className="btn-sm danger" onClick={() => handleArchive(h.id)}>Archive</button>
+                  </div>
                 </div>
               </li>
             );

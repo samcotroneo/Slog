@@ -26,7 +26,7 @@ People open Slog for quick daily check-ins, to add a weight entry, review progre
 
 - Users can save their height locally for BMI calculations.
 - Progress logs capture weight and waistline together, can be edited or deleted, and can be charted as Weight, BMI, or Waistline trends.
-- Users can create habits with 1–20 targets, choose daily/fortnightly/weekly/monthly frequency, log progress, and archive habits.
+- Users can create habits with 1–20 targets, choose daily/fortnightly/weekly/monthly frequency, tap daily cards to log progress, undo same-day logs, and archive habits.
 - Google Drive sync is optional and uses the hidden `appDataFolder`.
 - An optional passphrase encrypts the Drive backup.
 - There is no custom backend or telemetry.

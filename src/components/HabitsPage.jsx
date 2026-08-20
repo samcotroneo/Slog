@@ -10,9 +10,37 @@ function loggedCount(log, target) {
   return Math.min(target, Math.max(1, Math.round(value)));
 }
 
+function previousDate(date) {
+  const value = new Date(`${date}T12:00:00Z`);
+  value.setUTCDate(value.getUTCDate() - 1);
+  return value.toISOString().slice(0, 10);
+}
+
+function calculateStreak(logs, target, endDate) {
+  const completedDates = new Set(
+    logs
+      .filter(log => loggedCount(log, target) >= target)
+      .map(log => log.date)
+  );
+  let date = endDate;
+  let streak = 0;
+
+  while (completedDates.has(date)) {
+    streak += 1;
+    date = previousDate(date);
+  }
+
+  return streak;
+}
+
+function formatStreak(streak) {
+  return `${streak} ${streak === 1 ? 'day' : 'days'} streak`;
+}
+
 export default function HabitsPage() {
   const [habits, setHabits] = useState([]);
   const [todayLogs, setTodayLogs] = useState({});
+  const [streaks, setStreaks] = useState({});
   const [newHabit, setNewHabit] = useState({ name: '', target: 1, frequency: 'daily' });
   const [habitError, setHabitError] = useState('');
   const [editingHabits, setEditingHabits] = useState(false);
@@ -21,21 +49,32 @@ export default function HabitsPage() {
   const previousTarget = newHabit.target > 1 ? newHabit.target - 1 : null;
   const nextTarget = newHabit.target < 20 ? newHabit.target + 1 : null;
 
-  async function loadHabits() {
-    const h = await db.habits.where('active').equals(1).toArray();
-    setHabits(h);
-  }
+  async function loadHabitData() {
+    const [activeHabits, logs] = await Promise.all([
+      db.habits.where('active').equals(1).toArray(),
+      db.habitLogs.toArray()
+    ]);
+    const todayMap = {};
+    const logsByHabit = {};
 
-  async function loadTodayLogs() {
-    const logs = await db.habitLogs.where('date').equals(today).toArray();
-    const map = {};
-    logs.forEach(l => { map[l.habitId] = l; });
-    setTodayLogs(map);
+    logs.forEach(log => {
+      if (log.date === today) todayMap[log.habitId] = log;
+      if (!logsByHabit[log.habitId]) logsByHabit[log.habitId] = [];
+      logsByHabit[log.habitId].push(log);
+    });
+
+    const streakMap = {};
+    activeHabits.forEach(habit => {
+      streakMap[habit.id] = calculateStreak(logsByHabit[habit.id] ?? [], habit.target, today);
+    });
+
+    setHabits(activeHabits);
+    setTodayLogs(todayMap);
+    setStreaks(streakMap);
   }
 
   useEffect(() => {
-    loadHabits();
-    loadTodayLogs();
+    loadHabitData();
   }, []);
 
   async function handleAddHabit(e) {
@@ -55,12 +94,12 @@ export default function HabitsPage() {
       active: 1
     });
     setNewHabit({ name: '', target: 1, frequency: 'daily' });
-    loadHabits();
+    await loadHabitData();
   }
 
   async function handleArchive(id) {
     await db.habits.update(id, { active: 0 });
-    loadHabits();
+    await loadHabitData();
   }
 
   async function handleLogHabit(habit) {
@@ -78,7 +117,7 @@ export default function HabitsPage() {
         date: today
       });
     }
-    await loadTodayLogs();
+    await loadHabitData();
   }
 
   async function handleUndoHabit(habit) {
@@ -91,7 +130,7 @@ export default function HabitsPage() {
     } else {
       await db.habitLogs.update(existing.id, { value: currentValue - 1 });
     }
-    await loadTodayLogs();
+    await loadHabitData();
   }
 
   return (
@@ -230,7 +269,12 @@ export default function HabitsPage() {
                   >
                     <span className="habit-card-copy">
                       <span className="habit-name">{h.name}</span>
-                      <span className="habit-frequency">{h.frequency ?? 'daily'}</span>
+                      <span className="habit-meta">
+                        <span className="habit-frequency">{h.frequency ?? 'daily'}</span>
+                        <span className="habit-streak" aria-label={formatStreak(streaks[h.id] ?? 0)}>
+                          {formatStreak(streaks[h.id] ?? 0)}
+                        </span>
+                      </span>
                     </span>
                     {h.target > 1 && (
                       <span className="segmented-progress" role="img" aria-label={`${count} of ${h.target} completed`}>

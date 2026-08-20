@@ -1207,6 +1207,19 @@ button[type="submit"]:hover {
   font-size: 0.78rem;
 }
 
+.habit-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.habit-streak {
+  color: var(--accent-dark);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
 .segmented-progress {
   display: flex;
   width: 100%;

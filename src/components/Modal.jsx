@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Modal({ title, onClose, children }) {
+  const [headerHeight, setHeaderHeight] = useState(() => document.querySelector('.app-header')?.getBoundingClientRect().height ?? 0);
+
   useEffect(() => {
     function handleKeyDown(event) {
       if (event.key === 'Escape') onClose();
@@ -9,16 +11,24 @@ export default function Modal({ title, onClose, children }) {
     document.body.classList.add('modal-open');
     document.addEventListener('keydown', handleKeyDown);
 
+    function updateHeaderHeight() {
+      setHeaderHeight(document.querySelector('.app-header')?.getBoundingClientRect().height ?? 0);
+    }
+
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+
     return () => {
       document.body.classList.remove('modal-open');
       document.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', updateHeaderHeight);
     };
   }, [onClose]);
 
   const titleId = `modal-title-${title.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
-    <div className="modal-backdrop" onMouseDown={onClose}>
+    <div className="modal-backdrop" style={{ '--modal-top': `${headerHeight}px` }} onMouseDown={onClose}>
       <section
         className="modal-card"
         role="dialog"

@@ -1,12 +1,11 @@
 # Slog — Local-First Privacy Health & Fitness Tracker
 
-A serverless, privacy-first web app for tracking weight, profile, and daily habits — stored locally in your browser and optionally synced to your personal Google Drive.
+A serverless, privacy-first web app for tracking height, weight, waistline, and daily habits — stored locally in your browser and optionally synced to your personal Google Drive.
 
 ## Features
 
-- 🏋️ **Weight Log** — Record and chart your weight over time
-- 👤 **Profile** — Store height and birth year locally
-- ✅ **Habits** — Define daily habits with targets and log progress
+- 📈 **You** — Save your height, log weight and waistline together, and chart Weight, BMI, or Waistline trends
+- ✅ **Habits** — Define habits with 1–20 targets and daily, fortnightly, weekly, or monthly frequencies
 - ☁️ **Drive Sync** — Last-Write-Wins sync to your Google Drive `appDataFolder` (hidden from your Drive files)
 - 🔒 **Optional AES-GCM encryption** — Encrypt the Drive backup with a passphrase so even Google can't read it
 - 📴 **Offline-first PWA** — Works without internet; installable on iOS, Android, and desktop
@@ -76,8 +75,7 @@ src/
   syncOrchestrator.js   # Last-Write-Wins sync logic
   utils.js              # nanoid, todayISO helpers
   components/
-    ProfilePage.jsx
-    WeightLogPage.jsx
+    YouPage.jsx           # Height, progress logs, editing, and trends
     HabitsPage.jsx
     SyncButton.jsx
   App.jsx

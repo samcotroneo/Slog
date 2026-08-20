@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-20T13:05:41Z",
+  "title": "Design System: Slog",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Forest Green",
+        "canonical": "#1b7f4d",
+        "tonalRamp": [
+          "#0b2f1c",
+          "#0f472a",
+          "#176642",
+          "#1a713f",
+          "#1b7f4d",
+          "#4b9f73",
+          "#9bcdb0",
+          "#e5f3ea"
+        ]
+      },
+      "accent-dark": {
+        "role": "primary",
+        "displayName": "Forest Green Dark",
+        "canonical": "#176642",
+        "tonalRamp": [
+          "#081a10",
+          "#0e2a1b",
+          "#176642",
+          "#1f8552",
+          "#27a065",
+          "#5cbf8c",
+          "#a9dcc3",
+          "#e2f4ea"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Forest Green Soft",
+        "canonical": "#e6f3eb",
+        "tonalRamp": [
+          "#16362450",
+          "#1c4a30",
+          "#2f7a52",
+          "#5aa87c",
+          "#8ec9a8",
+          "#c3e4d3",
+          "#e6f3eb",
+          "#f6fbf8"
+        ]
+      },
+      "accent-wash": {
+        "role": "primary",
+        "displayName": "Forest Green Wash",
+        "canonical": "#f2faf5",
+        "tonalRamp": [
+          "#16362450",
+          "#1c4a30",
+          "#2f7a52",
+          "#5aa87c",
+          "#8ec9a8",
+          "#d3ecdf",
+          "#f2faf5",
+          "#fbfefc"
+        ]
+      },
+      "danger": {
+        "role": "status",
+        "displayName": "Muted Clay Red",
+        "canonical": "#b84c4c",
+        "tonalRamp": [
+          "#3d1414",
+          "#5c1e1e",
+          "#7c2929",
+          "#9c3838",
+          "#b84c4c",
+          "#cf7a7a",
+          "#e7b3b3",
+          "#fff1f1"
+        ]
+      },
+      "danger-soft": {
+        "role": "status",
+        "displayName": "Clay Red Soft",
+        "canonical": "#fff1f1",
+        "tonalRamp": [
+          "#4a1a1a",
+          "#6e2626",
+          "#963333",
+          "#b84c4c",
+          "#d68484",
+          "#eab8b8",
+          "#f9dcdc",
+          "#fff1f1"
+        ]
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "Warm White",
+        "canonical": "#f7faf7",
+        "tonalRamp": [
+          "#12211a",
+          "#243a2f",
+          "#3f584a",
+          "#647566",
+          "#8c9c90",
+          "#c1cec4",
+          "#e6ede7",
+          "#f7faf7"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Pure Surface",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#1a1a1a",
+          "#333333",
+          "#4d4d4d",
+          "#7a7a7a",
+          "#a6a6a6",
+          "#d1d1d1",
+          "#ededed",
+          "#ffffff"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Botanical Border",
+        "canonical": "#dce8df",
+        "tonalRamp": [
+          "#1c2a20",
+          "#324937",
+          "#4f6c55",
+          "#748f79",
+          "#a2b8a6",
+          "#c4d5c8",
+          "#dce8df",
+          "#f1f6f2"
+        ]
+      },
+      "border-strong": {
+        "role": "neutral",
+        "displayName": "Botanical Border Strong",
+        "canonical": "#c8d9cd",
+        "tonalRamp": [
+          "#182a1e",
+          "#2c4834",
+          "#476952",
+          "#6b8b72",
+          "#96ab99",
+          "#c8d9cd",
+          "#dfe9e2",
+          "#f0f5f1"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#193025",
+        "tonalRamp": [
+          "#0a1410",
+          "#193025",
+          "#26473a",
+          "#3a6250",
+          "#578071",
+          "#83a597",
+          "#bbd2c8",
+          "#e6efeb"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Sage",
+        "canonical": "#63756b",
+        "tonalRamp": [
+          "#1c2320",
+          "#33403a",
+          "#4c5d54",
+          "#63756b",
+          "#85958c",
+          "#adb9b2",
+          "#d3dad6",
+          "#eef1ef"
+        ]
+      },
+      "muted-light": {
+        "role": "neutral",
+        "displayName": "Muted Sage Light",
+        "canonical": "#5f7567",
+        "tonalRamp": [
+          "#1c2921",
+          "#2f4437",
+          "#465c4d",
+          "#5f7567",
+          "#819486",
+          "#aab9ae",
+          "#d0dad3",
+          "#eef3ef"
+        ]
+      },
+      "surface-subtle": {
+        "role": "neutral",
+        "displayName": "Surface Subtle",
+        "canonical": "#fbfdfb",
+        "tonalRamp": [
+          "#1a1a1a",
+          "#333333",
+          "#4d4d4d",
+          "#7a7a7a",
+          "#a6a6a6",
+          "#d1d1d1",
+          "#eef2ef",
+          "#fbfdfb"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page title (h1) at the top of each tab, one per view."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and section headings (panel title, chart heading, list section heading)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Page-heading descriptive copy and general prose, capped near 46ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels and small metadata captions."
+      }
+    },
+    "shadows": [
+      {
+        "name": "ambient-card",
+        "value": "0 14px 40px rgba(25, 48, 37, 0.06)",
+        "purpose": "The single resting elevation shadow, applied to every card, entry panel, and form card."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px rgba(35, 139, 90, 0.14)",
+        "purpose": "Soft green halo on focused inputs; a state treatment rather than resting elevation."
+      },
+      {
+        "name": "chart-tooltip",
+        "value": "0 10px 24px rgba(25, 48, 37, 0.08)",
+        "purpose": "Recharts tooltip popover shadow, slightly stronger than the ambient card shadow for a floating element."
+      },
+      {
+        "name": "segmented-tab",
+        "value": "0 2px 8px rgba(25, 48, 37, 0.06)",
+        "purpose": "Small lift on the active/hovered pill inside the Weight/BMI/Waistline metric-tab track; marks selection, not resting elevation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "page-enter",
+        "value": "420ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Shared fade+rise entrance for every page/tab switch."
+      },
+      {
+        "name": "progress-fill",
+        "value": "300ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Habit progress bar fill transform transition."
+      },
+      {
+        "name": "state-ease",
+        "value": "160ms ease",
+        "purpose": "Default hover/focus color and border transitions across buttons and inputs."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "md",
+        "value": "820px"
+      },
+      {
+        "name": "sm",
+        "value": "600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid accent submit button used to commit a form (add entry, add habit, save profile).",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Add entry</button>",
+      "css": ".ds-btn-primary { min-height: 44px; padding: 0 17px; border: 0; border-radius: 10px; background: #1b7f4d; color: #fff; font-size: 0.88rem; font-weight: 750; cursor: pointer; transition: background 160ms ease, transform 160ms ease; } .ds-btn-primary:hover { background: #176642; transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(35, 139, 90, 0.14); }"
+    },
+    {
+      "name": "Small Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger-ghost",
+      "description": "Row-level destructive action (delete a weight entry, archive a habit).",
+      "html": "<button class=\"ds-btn-sm-danger\" type=\"button\">Delete</button>",
+      "css": ".ds-btn-sm-danger { min-width: 30px; min-height: 30px; padding: 0 8px; border: 1px solid #f0d4d4; border-radius: 8px; background: transparent; color: #b84c4c; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: background 160ms ease, border-color 160ms ease, color 160ms ease; } .ds-btn-sm-danger:hover { border-color: #b84c4c; background: #fff1f1; } .ds-btn-sm-danger:focus-visible { outline: 2px solid #b84c4c; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Standard labeled numeric/text field used across weight, habit, and profile forms.",
+      "html": "<label class=\"ds-field\"><span>Weight in kilograms</span><input class=\"ds-input\" type=\"number\" placeholder=\"e.g. 72.4\" /></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; color: #63756b; font-size: 0.78rem; font-weight: 700; } .ds-input { width: 100%; padding: 12px 13px; border: 1px solid #c8d9cd; border-radius: 10px; outline: none; background: #ffffff; color: #193025; font-size: 1rem; transition: border-color 160ms ease, box-shadow 160ms ease; } .ds-input:focus { border-color: #1b7f4d; box-shadow: 0 0 0 3px rgba(35, 139, 90, 0.14); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Base raised container used for chart, list, form, and habit surfaces.",
+      "html": "<div class=\"ds-card\"><h2 class=\"ds-card-title\">Over time</h2><p class=\"ds-card-copy\">3 entries</p></div>",
+      "css": ".ds-card { border: 1px solid #dce8df; border-radius: 18px; background: #ffffff; box-shadow: 0 14px 40px rgba(25, 48, 37, 0.06); padding: 26px; } .ds-card-title { color: #193025; font-size: 1rem; font-weight: 720; margin: 0; } .ds-card-copy { color: #63756b; font-size: 0.86rem; line-height: 1.5; margin: 8px 0 0; }"
+    },
+    {
+      "name": "Tab Navigation Item",
+      "kind": "nav",
+      "refersTo": "nav-tab",
+      "description": "Header tab button with a green underline indicating the active/hovered view.",
+      "html": "<button class=\"ds-tab ds-tab-active\" type=\"button\"><svg aria-hidden=\"true\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m5 12 4.2 4.2L19 6.5\"/></svg><span>Habits</span></button>",
+      "css": ".ds-tab { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; height: 78px; border: 0; background: transparent; color: #63756b; font-size: 0.9rem; font-weight: 650; cursor: pointer; transition: color 160ms ease; } .ds-tab::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: transparent; } .ds-tab:hover, .ds-tab-active { color: #176642; } .ds-tab-active::after { background: #1b7f4d; }"
+    },
+    {
+      "name": "Habit Progress Bar",
+      "kind": "custom",
+      "refersTo": "progress-bar",
+      "description": "Signature component: a pill-shaped track showing today's progress toward a habit's daily target.",
+      "html": "<div class=\"ds-progress\"><div class=\"ds-progress-fill\" style=\"--ds-progress: 0.6\"></div></div>",
+      "css": ".ds-progress { height: 7px; border-radius: 99px; overflow: hidden; background: #e6f3eb; } .ds-progress-fill { height: 100%; width: 100%; border-radius: inherit; background: #1b7f4d; transform: scaleX(var(--ds-progress, 0)); transform-origin: left center; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }"
+    },
+    {
+      "name": "Segmented Metric Tabs",
+      "kind": "nav",
+      "refersTo": "segmented-tabs",
+      "description": "Three-way Weight/BMI/Waistline switcher on the You trend card; a subtle-surface track holding equal-width pill buttons.",
+      "html": "<div class=\"ds-segmented\" role=\"tablist\"><button role=\"tab\" aria-selected=\"true\" class=\"ds-segmented-tab ds-segmented-tab-active\">Weight</button><button role=\"tab\" aria-selected=\"false\" class=\"ds-segmented-tab\">BMI</button><button role=\"tab\" aria-selected=\"false\" class=\"ds-segmented-tab\">Waistline</button></div>",
+      "css": ".ds-segmented { display: flex; gap: 3px; padding: 3px; border: 1px solid #dce8df; border-radius: 10px; background: #fbfdfb; } .ds-segmented-tab { flex: 1; min-height: 30px; padding: 0 8px; border: 0; border-radius: 7px; background: transparent; color: #63756b; font-size: 0.76rem; font-weight: 700; cursor: pointer; } .ds-segmented-tab:hover, .ds-segmented-tab-active { background: #ffffff; color: #176642; box-shadow: 0 2px 8px rgba(25, 48, 37, 0.06); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Clinic Notebook",
+    "overview": "Slog reads as a single calm instrument, not a dashboard: one primary green, one work surface per tab, and a heading that leads straight into its task. The build follows the direction contract's own-world (warm white surfaces, forest-green ink, thin botanical borders, quiet shadows, practical line icons) closely \u2014 every surface is `--surface: #ffffff` on a barely-tinted `--bg: #f7faf7`, every border is a hairline `1px solid var(--border)`, and every shadow is a single soft, low-opacity ambient glow rather than a directional or offset shadow. Icons are hand-drawn inline SVG strokes (1.8px stroke, 17\u201318px box) for user/chart/check/lock/plus \u2014 never glyph icon fonts. Density is spacious and generous: cards carry 26\u201328px internal padding, the page shell runs on a 1180px-capped centered rail, and vertical rhythm between page sections is a wide 20\u201328px gap. Typography does the hierarchy work instead of color or multiple type families: one font stack throughout, differentiated by precise non-standard weight steps (650/720/750/760) and tight negative letter-spacing on the largest sizes, never by switching typeface.",
+    "keyCharacteristics": [
+      "Single-hue forest-green accent used sparingly against warm white and pale-green neutrals",
+      "One font family for the entire interface; hierarchy comes from size, weight, and letter-spacing only",
+      "Flat, hairline-bordered cards lifted only by one soft ambient shadow, never a hard or offset one",
+      "Inline stroke-SVG line icons only, never glyph icon fonts",
+      "Generous, uncluttered spacing with a task-first page composition and responsive entry/chart grid per tab"
+    ],
+    "rules": [
+      {
+        "name": "The One Accent Rule",
+        "body": "Forest Green is the only saturated color in the system. Every other color is either a neutral (white/warm-white/ink/muted) or the single functional red reserved for destructive actions. No second brand accent exists.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Every text role uses the same font stack. Emphasis is achieved only through weight (650\u2013800), size, and negative letter-spacing at large sizes \u2014 never a secondary display face.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Shadow Rule",
+        "body": "There is exactly one resting elevation shadow in the system, applied identically to every card-like surface. The chart tooltip and the segmented metric-tab's active-state shadow are the explicit transient exceptions; depth differences between resting elements are expressed by border and background only, not by shadow variation.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the interface to one saturated accent (Forest Green); use its soft/wash tonal steps for backgrounds only, never for text or borders.",
+      "Do use the single Ambient Card shadow (`0 14px 40px rgba(25, 48, 37, 0.06)`) plus a hairline border for every raised surface \u2014 don't invent a second shadow depth.",
+      "Do build hierarchy with this one font family's weight and size steps (650\u2013800 for emphasis) rather than introducing a second typeface.",
+      "Do draw icons as inline stroke SVGs (1.8px stroke, ~18px box) matching the existing user/chart/check/lock/plus set.",
+      "Do reserve the red danger color strictly for destructive row actions (delete, archive), never for warnings or emphasis.",
+      "Do preserve the shipped accessibility state model: `aria-current` for tabs, `aria-pressed` for the privacy toggle, explicit sync labels/titles, and polite live status updates."
+    ],
+    "donts": [
+      "Don't introduce a hard-edged or offset drop shadow anywhere \u2014 this is a soft-ambient-shadow, hairline-border world, not a neobrutalist one.",
+      "Don't add a second brand accent color; every non-neutral, non-danger color in this system is a tonal step of the one Forest Green.",
+      "Don't use glyph icon fonts or raster icon images; the system's icons are hand-authored stroke SVGs.",
+      "Don't hide the sync control's accessible name when compacting the header; only its visible text label is removed at the small breakpoint."
+    ]
+  }
+}

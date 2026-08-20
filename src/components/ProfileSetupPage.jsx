@@ -37,7 +37,7 @@ export default function ProfileSetupPage({ onComplete }) {
     <div className="setup-page">
       <div className="setup-intro">
         <h1>Let&apos;s make it about you.</h1>
-        <p>Set a couple of simple baselines. They stay on this device and help your progress feel personal from the start.</p>
+        <p>We know health can be a slog, let&apos;s set a couple of baselines to make tracking easier.</p>
       </div>
 
       <form className="card setup-card" onSubmit={handleSubmit}>

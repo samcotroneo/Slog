@@ -15,7 +15,7 @@ export default function HabitsPage() {
   const [todayLogs, setTodayLogs] = useState({});
   const [newHabit, setNewHabit] = useState({ name: '', target: 1, frequency: 'daily' });
   const [habitError, setHabitError] = useState('');
-  const [editingHabitId, setEditingHabitId] = useState(null);
+  const [editingHabits, setEditingHabits] = useState(false);
 
   const today = todayISO();
   const previousTarget = newHabit.target > 1 ? newHabit.target - 1 : null;
@@ -60,7 +60,6 @@ export default function HabitsPage() {
 
   async function handleArchive(id) {
     await db.habits.update(id, { active: 0 });
-    setEditingHabitId(null);
     loadHabits();
   }
 
@@ -198,7 +197,20 @@ export default function HabitsPage() {
       <div className="card habit-card">
         <div className="section-heading">
           <h2>Today</h2>
-          <span>{new Date(`${today}T12:00:00`).toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}</span>
+          <div className="today-heading-actions">
+            <span>{new Date(`${today}T12:00:00`).toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}</span>
+            <button
+              type="button"
+              className={'today-edit-button' + (editingHabits ? ' active' : '')}
+              onClick={() => setEditingHabits(value => !value)}
+              aria-pressed={editingHabits}
+            >
+              <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                {editingHabits ? <path d="m6 12 4 4 8-8" /> : <><path d="m5 19 3.5-.8L19 7.7a2.1 2.1 0 0 0-3-3L5.8 15.5z" /><path d="m14.5 5.5 4 4" /></>}
+              </svg>
+              {editingHabits ? 'Done' : 'Edit'}
+            </button>
+          </div>
         </div>
         {habits.length === 0 && <p className="muted">No active habits. Add one above.</p>}
         <ul className="habit-list">
@@ -206,7 +218,6 @@ export default function HabitsPage() {
             const log = todayLogs[h.id];
             const count = loggedCount(log, h.target);
             const isComplete = count >= h.target;
-            const isEditing = editingHabitId === h.id;
             return (
               <li key={h.id}>
                 <div className={'habit-tap-card' + (isComplete ? ' complete' : '')}>
@@ -248,19 +259,7 @@ export default function HabitsPage() {
                         </svg>
                       </button>
                     )}
-                    <button
-                      type="button"
-                      className={'habit-icon-button habit-edit' + (isEditing ? ' active' : '')}
-                      onClick={() => setEditingHabitId(isEditing ? null : h.id)}
-                      aria-pressed={isEditing}
-                      aria-label={isEditing ? `Close edit mode for ${h.name}` : `Edit ${h.name}`}
-                      title={isEditing ? 'Close edit mode' : 'Edit habit'}
-                    >
-                      <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        {isEditing ? <path d="m6 12 4 4 8-8" /> : <><path d="m5 19 3.5-.8L19 7.7a2.1 2.1 0 0 0-3-3L5.8 15.5z" /><path d="m14.5 5.5 4 4" /></>}
-                      </svg>
-                    </button>
-                    {isEditing && (
+                    {editingHabits && (
                       <button
                         type="button"
                         className="habit-icon-button habit-archive"

@@ -480,6 +480,40 @@ button[type="submit"]:hover {
   gap: 16px;
 }
 
+.today-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.today-edit-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.today-edit-button:hover,
+.today-edit-button.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+}
+
+.today-edit-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .chart-heading {
   padding: 0 10px;
 }
@@ -920,7 +954,7 @@ button[type="submit"]:hover {
   min-width: 0;
   flex-direction: column;
   gap: 5px;
-  padding-right: 110px;
+  padding-right: 86px;
 }
 
 .habit-card-actions {
@@ -1191,7 +1225,7 @@ button[type="submit"]:hover {
   }
 
   .habit-card-copy {
-    padding-right: 96px;
+    padding-right: 76px;
   }
 
   .log-list li {

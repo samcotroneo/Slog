@@ -36,7 +36,7 @@ export default function ProfileSetupPage({ onComplete }) {
   return (
     <div className="setup-page">
       <div className="setup-intro">
-        <h1>Let&apos;s make Slog yours.</h1>
+        <h1>Let&apos;s make it about you.</h1>
         <p>Set a couple of simple baselines. They stay on this device and help your progress feel personal from the start.</p>
       </div>
 

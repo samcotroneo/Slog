@@ -53,7 +53,7 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.accent}"
-    textColor: "#1f2933"
+    textColor: "#ffffff"
     rounded: "{rounded.sm}"
     padding: "0 17px"
   button-primary-hover:
@@ -162,7 +162,7 @@ The Weight/BMI/Waistline switcher on the You trend card is a three-way segmented
 
 ### Buttons
 - **Shape:** 10px radius for primary and header controls, 8px for compact row actions, never fully square or fully pill except the small progress bar.
-- **Primary:** solid `--accent` background, charcoal text, 700–750 weight, e.g. the submit buttons (`0 17px` padding, 44px min-height) and the sync button.
+- **Primary:** solid `--accent` background, white text, 700–750 weight, e.g. the submit buttons (`0 17px` padding, 44px min-height) and the sync button.
 - **Hover / Focus:** primary buttons darken to `--accent-dark` and lift `translateY(-1px)` on hover; disabled sync state drops to 0.65 opacity with a `wait` cursor rather than graying out the color.
 - **Ghost / Small:** `.btn-sm` is a bordered, transparent-background pill-corner button in muted text for row-level actions (Delete, Archive); its `.danger` variant swaps to the red border/text and fills `--danger-soft` on hover.
 - **Sync accessibility:** the sync button keeps an explicit `aria-label` and matching `title` that change from “Sync backup” to “Syncing backup” while disabled; results render in a `role="status"` region with `aria-live="polite"`. On small screens the visual label is hidden, but the icon button and accessible name remain.

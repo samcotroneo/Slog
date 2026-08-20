@@ -35,8 +35,7 @@ export default function App() {
       <header className="app-header">
         <div className="header-inner">
           <a className="brand" href="/" onClick={e => e.preventDefault()} aria-label="Slog home">
-            <span className="brand-mark">S</span>
-            <span className="app-title">Slog</span>
+            <span className="brand-wordmark">slog</span>
           </a>
           <nav className="tabs" aria-label="Main navigation">
           {TABS.map(t => (

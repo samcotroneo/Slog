@@ -4,8 +4,8 @@
   "description": "Local-first privacy health and fitness tracker",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f7faf7",
-  "theme_color": "#1b7f4d",
+  "background_color": "#f6f7f8",
+  "theme_color": "#7f9d77",
   "icons": [
     {
       "src": "/icons/icon-192.svg",

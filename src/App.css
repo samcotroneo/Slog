@@ -1,20 +1,22 @@
 :root {
-  --accent: #1b7f4d;
-  --accent-dark: #176642;
-  --accent-soft: #e6f3eb;
-  --accent-wash: #f2faf5;
-  --danger: #b84c4c;
-  --danger-soft: #fff1f1;
-  --bg: #f7faf7;
+  --accent: #7f9d77;
+  --accent-dark: #5f7f5b;
+  --accent-soft: #e7efe6;
+  --accent-wash: #f4f8f2;
+  --leaf: #dcead7;
+  --blush: #ffe8e6;
+  --danger: #c96b69;
+  --danger-soft: #fff2f1;
+  --bg: #f6f7f8;
   --surface: #ffffff;
-  --surface-subtle: #fbfdfb;
-  --border: #dce8df;
-  --border-strong: #c8d9cd;
-  --text: #193025;
-  --muted: #63756b;
-  --muted-light: #5f7567;
-  --shadow: 0 14px 40px rgba(25, 48, 37, 0.06);
-  --radius: 18px;
+  --surface-subtle: #f6f7f8;
+  --border: #e4e9e6;
+  --border-strong: #d3ddd4;
+  --text: #1f2933;
+  --muted: #6b7280;
+  --muted-light: #7c8793;
+  --shadow: 0 10px 28px rgba(31, 41, 51, 0.055);
+  --radius: 16px;
   --radius-sm: 12px;
 }
 
@@ -42,7 +44,7 @@ button {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(255, 255, 255, 0.94);
   border-bottom: 1px solid var(--border);
 }
 
@@ -64,23 +66,12 @@ button {
   text-decoration: none;
 }
 
-.brand-mark {
-  display: grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
-  border-radius: 11px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-}
-
-.app-title {
-  font-size: 1.15rem;
-  font-weight: 750;
-  letter-spacing: -0.03em;
+.brand-wordmark {
+  color: var(--accent-dark);
+  font-size: 2rem;
+  font-weight: 760;
+  letter-spacing: -0.09em;
+  line-height: 0.9;
 }
 
 .tabs {
@@ -172,7 +163,7 @@ button {
   padding: 0 14px;
   border: 1px solid var(--accent);
   background: var(--accent);
-  color: #fff;
+  color: var(--text);
 }
 
 .sync-btn:hover:not(:disabled) {
@@ -201,7 +192,7 @@ button {
 
 .passphrase-bar {
   border-bottom: 1px solid var(--border);
-  background: var(--accent-wash);
+  background: var(--accent-soft);
 }
 
 .passphrase-inner {
@@ -251,13 +242,13 @@ button {
 .form-card input:focus,
 .habit-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(35, 139, 90, 0.14);
+  box-shadow: 0 0 0 3px rgba(127, 157, 119, 0.2);
 }
 
 .app-main {
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 64px 0 88px;
+  padding: 52px 0 88px;
 }
 
 .page {
@@ -284,7 +275,7 @@ button {
   color: var(--text);
   font-size: clamp(2rem, 4vw, 3.25rem);
   font-weight: 760;
-  letter-spacing: -0.065em;
+  letter-spacing: -0.055em;
   line-height: 1;
 }
 
@@ -372,7 +363,7 @@ button {
 
 .unit-input:focus-within {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(35, 139, 90, 0.14);
+  box-shadow: 0 0 0 3px rgba(127, 157, 119, 0.2);
 }
 
 .unit-input input {
@@ -451,7 +442,7 @@ button[type="submit"] {
   border: 0;
   border-radius: 10px;
   background: var(--accent);
-  color: #fff;
+  color: var(--text);
   cursor: pointer;
   font-size: 0.88rem;
   font-weight: 750;
@@ -465,7 +456,7 @@ button[type="submit"]:hover {
 
 .chart-card {
   min-height: 235px;
-  padding: 18px 16px 12px;
+  padding: 20px 18px 14px;
 }
 
 .trend-card {
@@ -545,7 +536,7 @@ button[type="submit"]:hover {
 .metric-tab.active {
   background: var(--surface);
   color: var(--accent-dark);
-  box-shadow: 0 2px 8px rgba(25, 48, 37, 0.06);
+  box-shadow: 0 2px 8px rgba(31, 41, 51, 0.06);
 }
 
 .chart-empty {
@@ -651,7 +642,7 @@ button[type="submit"]:hover {
 
 .edit-fields input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(35, 139, 90, 0.14);
+  box-shadow: 0 0 0 3px rgba(127, 157, 119, 0.2);
 }
 
 .btn-sm {
@@ -669,7 +660,7 @@ button[type="submit"]:hover {
 }
 
 .btn-sm.danger {
-  border-color: #f0d4d4;
+  border-color: var(--blush);
   color: var(--danger);
 }
 
@@ -872,8 +863,8 @@ button[type="submit"]:hover {
 
 .frequency-option.active {
   border-color: var(--accent);
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent-soft);
+  color: var(--text);
 }
 
 .frequency-picker {
@@ -911,7 +902,7 @@ button[type="submit"]:hover {
   min-height: 96px;
   padding: 16px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   background: var(--surface);
   color: inherit;
   transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
@@ -995,7 +986,7 @@ button[type="submit"]:hover {
 }
 
 .habit-icon-button.habit-archive {
-  border-color: #f0d4d4;
+  border-color: var(--blush);
   color: var(--danger);
 }
 
@@ -1103,7 +1094,6 @@ button[type="submit"]:hover {
     gap: 12px;
   }
 
-  .app-title,
   .privacy-btn span {
     display: none;
   }

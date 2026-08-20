@@ -237,14 +237,14 @@ export default function YouPage() {
           ) : chartData.length > 1 ? (
             <ResponsiveContainer width="100%" height={190}>
               <LineChart data={chartData} margin={{ top: 18, right: 12, left: -18, bottom: 0 }}>
-                <CartesianGrid stroke="#e6efe8" vertical={false} />
-                <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#5f7567' }} axisLine={false} tickLine={false} />
-                <YAxis domain={['auto', 'auto']} tick={{ fontSize: 10, fill: '#5f7567' }} axisLine={false} tickLine={false} width={36} />
+                <CartesianGrid stroke="#e7efe6" vertical={false} />
+                <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#7c8793' }} axisLine={false} tickLine={false} />
+                <YAxis domain={['auto', 'auto']} tick={{ fontSize: 10, fill: '#7c8793' }} axisLine={false} tickLine={false} width={36} />
                 <Tooltip
                   formatter={value => [formatValue(value, selectedMetric.unit), selectedMetric.label]}
-                  contentStyle={{ border: '1px solid #dce8df', borderRadius: 10, boxShadow: '0 10px 24px rgba(25, 48, 37, 0.08)' }}
+                  contentStyle={{ border: '1px solid #e4e9e6', borderRadius: 10, boxShadow: '0 10px 24px rgba(31, 41, 51, 0.08)' }}
                 />
-                <Line type="monotone" dataKey="value" stroke="#1b7f4d" dot={{ fill: '#1b7f4d', r: 3 }} activeDot={{ r: 5 }} strokeWidth={2.5} />
+                <Line type="monotone" dataKey="value" stroke="#7f9d77" dot={{ fill: '#7f9d77', r: 3 }} activeDot={{ r: 5 }} strokeWidth={2.5} />
               </LineChart>
             </ResponsiveContainer>
           ) : (

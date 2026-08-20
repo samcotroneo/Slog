@@ -17,6 +17,9 @@ function Icon({ name, size = 18 }) {
     chart: <><path d="M4 19V5" /><path d="M4 19h16" /><path d="m7 15 3-4 3 2 4-6" /></>,
     check: <><path d="m5 12 4.2 4.2L19 6.5" /></>,
     lock: <><rect x="5" y="10" width="14" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></>,
+    menu: <><path d="M4 7h16M4 12h16M4 17h16" /></>,
+    close: <><path d="m6 6 12 12M18 6 6 18" /></>,
+    settings: <><circle cx="12" cy="12" r="3.5" /><path d="M19.4 15a1.8 1.8 0 0 0 .4 2l.1.1a1.8 1.8 0 1 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-2-.4 1.8 1.8 0 0 0-1.1 1.7v.2a1.8 1.8 0 0 1-3.6 0v-.2a1.8 1.8 0 0 0-1.1-1.7 1.8 1.8 0 0 0-2 .4l-.1.1a1.8 1.8 0 1 1-2.5-2.5l.1-.1a1.8 1.8 0 0 0 .4-2A1.8 1.8 0 0 0 5.8 14h-.2a1.8 1.8 0 0 1 0-3.6h.2a1.8 1.8 0 0 0 1.7-1.1 1.8 1.8 0 0 0-.4-2L7 7.2a1.8 1.8 0 1 1 2.5-2.5l.1.1a1.8 1.8 0 0 0 2 .4A1.8 1.8 0 0 0 12.7 3v-.2a1.8 1.8 0 0 1 3.6 0V3a1.8 1.8 0 0 0 1.1 1.7 1.8 1.8 0 0 0 2-.4l.1-.1A1.8 1.8 0 1 1 22 6.7l-.1.1a1.8 1.8 0 0 0-.4 2 1.8 1.8 0 0 0 1.7 1.1h.2a1.8 1.8 0 0 1 0 3.6h-.2a1.8 1.8 0 0 0-1.7 1.1Z" /></>,
     plus: <><path d="M12 5v14M5 12h14" /></>
   };
 
@@ -33,6 +36,8 @@ export default function App() {
   const [showPassphrase, setShowPassphrase] = useState(false);
   const [profileReady, setProfileReady] = useState(false);
   const [needsProfileSetup, setNeedsProfileSetup] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     db.profile.get('user_profile').then(profile => {
@@ -68,18 +73,45 @@ export default function App() {
                   </button>
                 ))}
               </nav>
-              <div className="header-right">
+              <div className={'header-right' + (mobileMenuOpen ? ' menu-open' : '')}>
                 <button
-                  className={'privacy-btn' + (showPassphrase ? ' active' : '')}
-                  onClick={() => setShowPassphrase(p => !p)}
-                  title="Toggle encryption passphrase"
                   type="button"
-                  aria-pressed={showPassphrase}
+                  className="menu-toggle"
+                  aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                  aria-expanded={mobileMenuOpen}
+                  aria-controls="toolbar-actions"
+                  onClick={() => setMobileMenuOpen(open => !open)}
                 >
-                  <Icon name="lock" size={17} />
-                  <span>Privacy</span>
+                  <Icon name={mobileMenuOpen ? 'close' : 'menu'} size={20} />
                 </button>
-                <SyncButton passphrase={passphrase} />
+                <div id="toolbar-actions" className="toolbar-actions">
+                  <button
+                    className={'privacy-btn' + (showPassphrase ? ' active' : '')}
+                    onClick={() => setShowPassphrase(p => !p)}
+                    title="Toggle encryption passphrase"
+                    type="button"
+                    aria-pressed={showPassphrase}
+                  >
+                    <Icon name="lock" size={17} />
+                    <span>Privacy</span>
+                  </button>
+                  <SyncButton passphrase={passphrase} />
+                  {tab === 'you' && (
+                    <button
+                      type="button"
+                      className={'settings-toggle toolbar-settings' + (settingsOpen ? ' active' : '')}
+                      aria-expanded={settingsOpen}
+                      aria-controls="profile-settings"
+                      onClick={() => {
+                        setSettingsOpen(open => !open);
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      <Icon name="settings" size={17} />
+                      <span>Settings</span>
+                    </button>
+                  )}
+                </div>
               </div>
             </>
           )}
@@ -112,7 +144,7 @@ export default function App() {
           <ProfileSetupPage onComplete={() => setNeedsProfileSetup(false)} />
         ) : (
           <>
-            {tab === 'you' && <YouPage />}
+            {tab === 'you' && <YouPage settingsOpen={settingsOpen} />}
             {tab === 'habits' && <HabitsPage />}
           </>
         )}

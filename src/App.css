@@ -125,10 +125,42 @@ button {
 }
 
 .header-right {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
   margin-left: auto;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent-dark);
+}
+
+.menu-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .privacy-btn,
@@ -384,6 +416,10 @@ button {
 .settings-toggle:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.toolbar-settings {
+  min-height: 38px;
 }
 
 .settings-panel {
@@ -1213,8 +1249,49 @@ button[type="submit"]:hover {
     gap: 7px;
   }
 
-  .sync-btn {
-    padding: 0 11px;
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  .toolbar-actions {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    z-index: 20;
+    flex-direction: column;
+    align-items: stretch;
+    width: min(240px, calc(100vw - 32px));
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  .header-right.menu-open .toolbar-actions {
+    display: flex;
+  }
+
+  .toolbar-actions .privacy-btn,
+  .toolbar-actions .toolbar-settings {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .toolbar-actions .privacy-btn span,
+  .toolbar-actions .sync-label {
+    display: inline;
+  }
+
+  .toolbar-actions .sync-area {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .toolbar-actions .sync-btn {
+    width: 100%;
   }
 
   .sync-label {

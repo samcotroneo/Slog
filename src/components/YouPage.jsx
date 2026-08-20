@@ -25,7 +25,7 @@ function formatValue(value, unit) {
   return value == null ? '—' : `${value} ${unit}`.trim();
 }
 
-export default function YouPage() {
+export default function YouPage({ settingsOpen }) {
   const [heightCm, setHeightCm] = useState('');
   const [weightGoalKg, setWeightGoalKg] = useState('');
   const [logs, setLogs] = useState([]);
@@ -35,7 +35,6 @@ export default function YouPage() {
   const [editForm, setEditForm] = useState({ weightKg: '', waistCm: '' });
   const [heightSaved, setHeightSaved] = useState(false);
   const [goalSaved, setGoalSaved] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [error, setError] = useState('');
 
   async function loadData() {
@@ -158,24 +157,9 @@ export default function YouPage() {
           <h1>You</h1>
           <p>Keep the measures that help you understand your progress, all in one calm place.</p>
         </div>
-        <div className="heading-actions">
-          <p className="heading-note">
-            {latest ? `Last logged ${new Date(latest.timestamp).toLocaleDateString()}.` : 'Your first log starts the story.'}
-          </p>
-          <button
-            type="button"
-            className="settings-toggle"
-            aria-expanded={settingsOpen}
-            aria-controls="profile-settings"
-            onClick={() => setSettingsOpen(open => !open)}
-          >
-            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
-              <path d="m19.4 15 .1.1a1.8 1.8 0 0 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-3.1 1.3v.2a1.8 1.8 0 0 1-3.6 0v-.2a1.8 1.8 0 0 0-3.1-1.3l-.1.1a1.8 1.8 0 1 1-2.5-2.5l.1-.1A1.8 1.8 0 0 0 4.3 12H4a1.8 1.8 0 0 1 0-3.6h.2a1.8 1.8 0 0 0 1.3-3.1l-.1-.1a1.8 1.8 0 1 1 2.5-2.5l.1.1A1.8 1.8 0 0 0 11.1 1.5h.2a1.8 1.8 0 0 1 3.6 0v.2A1.8 1.8 0 0 0 18 3l.1-.1a1.8 1.8 0 1 1 2.5 2.5l-.1.1a1.8 1.8 0 0 0 1.3 3.1h.2a1.8 1.8 0 0 1 0 3.6h-.2a1.8 1.8 0 0 0-1.3 3.1Z" />
-            </svg>
-            Settings
-          </button>
-        </div>
+        <p className="heading-note">
+          {latest ? `Last logged ${new Date(latest.timestamp).toLocaleDateString()}.` : 'Your first log starts the story.'}
+        </p>
       </div>
 
       {settingsOpen && (

@@ -16,9 +16,9 @@ export async function getLocalSnapshot() {
   const profile = await db.profile.toArray();
 
   return {
-    version: 2,
+    version: 3,
     timestamp: Date.now(),
-    profile: profile.map(({ id, heightCm }) => ({ id, heightCm })),
+    profile: profile.map(({ id, heightCm, weightGoalKg, setupComplete }) => ({ id, heightCm, weightGoalKg, setupComplete })),
     weightLogs: await db.weightLogs.toArray(),
     habits: await db.habits.toArray(),
     habitLogs: await db.habitLogs.toArray()
@@ -36,7 +36,7 @@ export async function restoreLocalSnapshot(data) {
     await db.habitLogs.clear();
 
     if (data.profile?.length) {
-      const profile = data.profile.map(({ id, heightCm }) => ({ id, heightCm }));
+      const profile = data.profile.map(({ id, heightCm, weightGoalKg, setupComplete }) => ({ id, heightCm, weightGoalKg, setupComplete }));
       await db.profile.bulkAdd(profile);
     }
     if (data.weightLogs?.length) await db.weightLogs.bulkAdd(data.weightLogs);

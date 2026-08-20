@@ -4,7 +4,7 @@ A serverless, privacy-first web app for tracking height, weight, waistline, and 
 
 ## Features
 
-- 📈 **You** — Save your height, log weight and waistline together, and chart Weight, BMI, or Waistline trends
+- 📈 **You** — Set a height and weight goal, log weight and waistline together, and chart Weight, BMI, or Waistline trends
 - ✅ **Habits** — Define habits with 1–20 targets and daily, fortnightly, weekly, or monthly frequencies, then tap daily cards to log progress
 - ☁️ **Drive Sync** — Last-Write-Wins sync to your Google Drive `appDataFolder` (hidden from your Drive files)
 - 🔒 **Optional AES-GCM encryption** — Encrypt the Drive backup with a passphrase so even Google can't read it
@@ -75,7 +75,8 @@ src/
   syncOrchestrator.js   # Last-Write-Wins sync logic
   utils.js              # nanoid, todayISO helpers
   components/
-    YouPage.jsx           # Height, progress logs, editing, and trends
+    YouPage.jsx           # Profile settings, progress logs, editing, and trends
+    ProfileSetupPage.jsx  # First-run height and weight-goal setup
     HabitsPage.jsx
     SyncButton.jsx
   App.jsx

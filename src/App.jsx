@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import YouPage from './components/YouPage.jsx';
 import HabitsPage from './components/HabitsPage.jsx';
+import ProfileSetupPage from './components/ProfileSetupPage.jsx';
 import SyncButton from './components/SyncButton.jsx';
+import { db } from './db.js';
 import './App.css';
 
 const TABS = [
@@ -29,6 +31,19 @@ export default function App() {
   const [tab, setTab] = useState('you');
   const [passphrase, setPassphrase] = useState('');
   const [showPassphrase, setShowPassphrase] = useState(false);
+  const [profileReady, setProfileReady] = useState(false);
+  const [needsProfileSetup, setNeedsProfileSetup] = useState(false);
+
+  useEffect(() => {
+    db.profile.get('user_profile').then(profile => {
+      setNeedsProfileSetup(profile?.setupComplete !== true);
+      setProfileReady(true);
+    });
+  }, []);
+
+  if (!profileReady) {
+    return <div className="app-shell" aria-busy="true" />;
+  }
 
   return (
     <div className="app-shell">
@@ -37,37 +52,41 @@ export default function App() {
           <a className="brand" href="/" onClick={e => e.preventDefault()} aria-label="Slog home">
             <span className="brand-wordmark">slog</span>
           </a>
-          <nav className="tabs" aria-label="Main navigation">
-          {TABS.map(t => (
-            <button
-              key={t.id}
-              className={'tab-btn' + (tab === t.id ? ' active' : '')}
-              onClick={() => setTab(t.id)}
-              type="button"
-              aria-current={tab === t.id ? 'page' : undefined}
-            >
-              <Icon name={t.icon} size={17} />
-              <span>{t.label}</span>
-            </button>
-          ))}
-          </nav>
-          <div className="header-right">
-            <button
-              className={'privacy-btn' + (showPassphrase ? ' active' : '')}
-              onClick={() => setShowPassphrase(p => !p)}
-              title="Toggle encryption passphrase"
-              type="button"
-              aria-pressed={showPassphrase}
-            >
-              <Icon name="lock" size={17} />
-              <span>Privacy</span>
-            </button>
-            <SyncButton passphrase={passphrase} />
-          </div>
+          {!needsProfileSetup && (
+            <>
+              <nav className="tabs" aria-label="Main navigation">
+                {TABS.map(t => (
+                  <button
+                    key={t.id}
+                    className={'tab-btn' + (tab === t.id ? ' active' : '')}
+                    onClick={() => setTab(t.id)}
+                    type="button"
+                    aria-current={tab === t.id ? 'page' : undefined}
+                  >
+                    <Icon name={t.icon} size={17} />
+                    <span>{t.label}</span>
+                  </button>
+                ))}
+              </nav>
+              <div className="header-right">
+                <button
+                  className={'privacy-btn' + (showPassphrase ? ' active' : '')}
+                  onClick={() => setShowPassphrase(p => !p)}
+                  title="Toggle encryption passphrase"
+                  type="button"
+                  aria-pressed={showPassphrase}
+                >
+                  <Icon name="lock" size={17} />
+                  <span>Privacy</span>
+                </button>
+                <SyncButton passphrase={passphrase} />
+              </div>
+            </>
+          )}
         </div>
       </header>
 
-      {showPassphrase && (
+      {!needsProfileSetup && showPassphrase && (
         <div className="passphrase-bar">
           <div className="passphrase-inner">
             <div>
@@ -89,8 +108,14 @@ export default function App() {
       )}
 
       <main className="app-main">
-        {tab === 'you' && <YouPage />}
-        {tab === 'habits' && <HabitsPage />}
+        {needsProfileSetup ? (
+          <ProfileSetupPage onComplete={() => setNeedsProfileSetup(false)} />
+        ) : (
+          <>
+            {tab === 'you' && <YouPage />}
+            {tab === 'habits' && <HabitsPage />}
+          </>
+        )}
       </main>
     </div>
   );

@@ -27,12 +27,14 @@ function formatValue(value, unit) {
 
 export default function YouPage() {
   const [heightCm, setHeightCm] = useState('');
+  const [weightGoalKg, setWeightGoalKg] = useState('');
   const [logs, setLogs] = useState([]);
   const [progress, setProgress] = useState({ weightKg: '', waistCm: '' });
   const [metric, setMetric] = useState('weight');
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ weightKg: '', waistCm: '' });
   const [heightSaved, setHeightSaved] = useState(false);
+  const [goalSaved, setGoalSaved] = useState(false);
   const [error, setError] = useState('');
 
   async function loadData() {
@@ -41,7 +43,24 @@ export default function YouPage() {
       db.weightLogs.orderBy('timestamp').toArray()
     ]);
     setHeightCm(profile?.heightCm ?? '');
+    setWeightGoalKg(profile?.weightGoalKg ?? '');
     setLogs(allLogs);
+  }
+
+  async function handleSaveWeightGoal(e) {
+    e.preventDefault();
+    const value = Number(weightGoalKg);
+    if (!Number.isFinite(value) || value < 20 || value > 500) {
+      setError('Enter a goal weight between 20 and 500 kg.');
+      return;
+    }
+
+    setError('');
+    const profile = await db.profile.get(PROFILE_ID);
+    await db.profile.put({ ...profile, id: PROFILE_ID, weightGoalKg: value });
+    setWeightGoalKg(String(value));
+    setGoalSaved(true);
+    setTimeout(() => setGoalSaved(false), 2000);
   }
 
   useEffect(() => {
@@ -57,7 +76,8 @@ export default function YouPage() {
     }
 
     setError('');
-    await db.profile.put({ id: PROFILE_ID, heightCm: value });
+    const profile = await db.profile.get(PROFILE_ID);
+    await db.profile.put({ ...profile, id: PROFILE_ID, heightCm: value });
     setHeightCm(String(value));
     setHeightSaved(true);
     setTimeout(() => setHeightSaved(false), 2000);
@@ -143,29 +163,57 @@ export default function YouPage() {
       </div>
 
       <section className="card profile-panel">
-        <div>
-          <h2 className="panel-title">Your height</h2>
-          <p className="panel-copy">Saved locally and used to calculate BMI on your trend graph.</p>
+        <div className="profile-setting">
+          <div>
+            <h2 className="panel-title">Your height</h2>
+            <p className="panel-copy">Saved locally and used to calculate BMI on your trend graph.</p>
+          </div>
+          <form onSubmit={handleSaveHeight} className="profile-inline-form">
+            <label className="field-label">
+              Height in centimetres
+              <div className="unit-input">
+                <input
+                  type="number"
+                  min="50"
+                  max="300"
+                  placeholder="e.g. 178"
+                  value={heightCm}
+                  onChange={e => setHeightCm(e.target.value)}
+                  required
+                />
+                <span>cm</span>
+              </div>
+            </label>
+            <button type="submit">Save height</button>
+            {heightSaved && <span className="success-msg">Height saved</span>}
+          </form>
         </div>
-        <form onSubmit={handleSaveHeight} className="profile-inline-form">
-          <label className="field-label">
-            Height in centimetres
-            <div className="unit-input">
-              <input
-                type="number"
-                min="50"
-                max="300"
-                placeholder="e.g. 178"
-                value={heightCm}
-                onChange={e => setHeightCm(e.target.value)}
-                required
-              />
-              <span>cm</span>
-            </div>
-          </label>
-          <button type="submit">Save height</button>
-          {heightSaved && <span className="success-msg">Height saved</span>}
-        </form>
+        <div className="profile-setting">
+          <div>
+            <h2 className="panel-title">Weight goal</h2>
+            <p className="panel-copy">A private target to keep your progress pointed in the right direction.</p>
+          </div>
+          <form onSubmit={handleSaveWeightGoal} className="profile-inline-form">
+            <label className="field-label">
+              Goal weight
+              <div className="unit-input">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="20"
+                  max="500"
+                  placeholder="e.g. 72.0"
+                  value={weightGoalKg}
+                  onChange={e => setWeightGoalKg(e.target.value)}
+                  required
+                />
+                <span>kg</span>
+              </div>
+            </label>
+            <button type="submit">Save goal</button>
+            {goalSaved && <span className="success-msg">Goal saved</span>}
+          </form>
+        </div>
       </section>
 
       {error && <p className="form-error" role="alert">{error}</p>}

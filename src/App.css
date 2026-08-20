@@ -231,7 +231,8 @@ body.modal-open {
   inset: 0;
   z-index: 30;
   display: grid;
-  place-items: center;
+  align-items: start;
+  justify-items: center;
   padding: 24px;
   background: rgba(31, 41, 51, 0.28);
   backdrop-filter: blur(3px);
@@ -1395,7 +1396,7 @@ button[type="submit"]:hover {
   }
 
   .modal-backdrop {
-    align-items: end;
+    align-items: start;
     padding: 12px;
   }
 

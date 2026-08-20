@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function Modal({ title, onClose, children }) {
   const [headerHeight, setHeaderHeight] = useState(() => document.querySelector('.app-header')?.getBoundingClientRect().height ?? 0);
@@ -27,7 +28,7 @@ export default function Modal({ title, onClose, children }) {
 
   const titleId = `modal-title-${title.toLowerCase().replace(/\s+/g, '-')}`;
 
-  return (
+  return createPortal((
     <div className="modal-backdrop" style={{ '--modal-top': `${headerHeight}px` }} onMouseDown={onClose}>
       <section
         className="modal-card"
@@ -47,5 +48,5 @@ export default function Modal({ title, onClose, children }) {
         {children}
       </section>
     </div>
-  );
+  ), document.body);
 }

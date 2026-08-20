@@ -15,6 +15,7 @@ export default function HabitsPage() {
   const [todayLogs, setTodayLogs] = useState({});
   const [newHabit, setNewHabit] = useState({ name: '', target: 1, frequency: 'daily' });
   const [habitError, setHabitError] = useState('');
+  const [editingHabitId, setEditingHabitId] = useState(null);
 
   const today = todayISO();
   const previousTarget = newHabit.target > 1 ? newHabit.target - 1 : null;
@@ -59,6 +60,7 @@ export default function HabitsPage() {
 
   async function handleArchive(id) {
     await db.habits.update(id, { active: 0 });
+    setEditingHabitId(null);
     loadHabits();
   }
 
@@ -204,19 +206,20 @@ export default function HabitsPage() {
             const log = todayLogs[h.id];
             const count = loggedCount(log, h.target);
             const isComplete = count >= h.target;
+            const isEditing = editingHabitId === h.id;
             return (
               <li key={h.id}>
-                <div className="habit-card-row">
+                <div className={'habit-tap-card' + (isComplete ? ' complete' : '')}>
                   <button
                     type="button"
-                    className={'habit-tap-card' + (isComplete ? ' complete' : '')}
+                    className="habit-log-button"
                     onClick={() => handleLogHabit(h)}
                     aria-pressed={isComplete}
                     aria-label={`${h.name}: ${count} of ${h.target} completed today`}
                   >
                     <span className="habit-card-copy">
                       <span className="habit-name">{h.name}</span>
-                      <span className="habit-target">Target {h.target} · {h.frequency ?? 'daily'}</span>
+                      <span className="habit-frequency">{h.frequency ?? 'daily'}</span>
                     </span>
                     {h.target > 1 && (
                       <span className="segmented-progress" role="img" aria-label={`${count} of ${h.target} completed`}>
@@ -234,7 +237,7 @@ export default function HabitsPage() {
                     {count > 0 && (
                       <button
                         type="button"
-                        className="habit-undo"
+                        className="habit-icon-button habit-undo"
                         onClick={() => handleUndoHabit(h)}
                         aria-label={`Undo last ${h.name} log`}
                         title="Undo last log"
@@ -245,7 +248,33 @@ export default function HabitsPage() {
                         </svg>
                       </button>
                     )}
-                    <button type="button" className="btn-sm danger" onClick={() => handleArchive(h.id)}>Archive</button>
+                    <button
+                      type="button"
+                      className={'habit-icon-button habit-edit' + (isEditing ? ' active' : '')}
+                      onClick={() => setEditingHabitId(isEditing ? null : h.id)}
+                      aria-pressed={isEditing}
+                      aria-label={isEditing ? `Close edit mode for ${h.name}` : `Edit ${h.name}`}
+                      title={isEditing ? 'Close edit mode' : 'Edit habit'}
+                    >
+                      <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        {isEditing ? <path d="m6 12 4 4 8-8" /> : <><path d="m5 19 3.5-.8L19 7.7a2.1 2.1 0 0 0-3-3L5.8 15.5z" /><path d="m14.5 5.5 4 4" /></>}
+                      </svg>
+                    </button>
+                    {isEditing && (
+                      <button
+                        type="button"
+                        className="habit-icon-button habit-archive"
+                        onClick={() => handleArchive(h.id)}
+                        aria-label={`Archive ${h.name}`}
+                        title="Archive habit"
+                      >
+                        <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 8h16v11H4z" />
+                          <path d="m3 8 2-4h14l2 4" />
+                          <path d="M9 12h6" />
+                        </svg>
+                      </button>
+                    )}
                   </div>
                 </div>
               </li>

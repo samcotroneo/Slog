@@ -871,28 +871,15 @@ button[type="submit"]:hover {
   border-top: 1px solid var(--border);
 }
 
-.habit-card-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: stretch;
-  gap: 12px;
-}
-
 .habit-tap-card {
-  display: flex;
+  position: relative;
   min-width: 0;
   min-height: 96px;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: space-between;
-  gap: 14px;
   padding: 16px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
   color: inherit;
-  cursor: pointer;
-  text-align: left;
   transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
@@ -901,15 +888,31 @@ button[type="submit"]:hover {
   transform: translateY(-1px);
 }
 
-.habit-tap-card:focus-visible,
-.habit-undo:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
 .habit-tap-card.complete {
   border-color: var(--accent);
   background: var(--accent-wash);
+}
+
+.habit-log-button {
+  display: flex;
+  width: 100%;
+  min-height: 64px;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.habit-log-button:focus-visible,
+.habit-icon-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .habit-card-copy {
@@ -917,18 +920,19 @@ button[type="submit"]:hover {
   min-width: 0;
   flex-direction: column;
   gap: 5px;
+  padding-right: 110px;
 }
 
 .habit-card-actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
   display: flex;
-  min-width: 76px;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 10px;
+  align-items: center;
+  gap: 6px;
 }
 
-.habit-undo {
+.habit-icon-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -943,11 +947,28 @@ button[type="submit"]:hover {
   transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
 }
 
-.habit-undo:hover {
+.habit-icon-button:hover {
   border-color: var(--border-strong);
   background: var(--accent-wash);
   color: var(--accent-dark);
   transform: translateY(-1px);
+}
+
+.habit-icon-button.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+}
+
+.habit-icon-button.habit-archive {
+  border-color: #f0d4d4;
+  color: var(--danger);
+}
+
+.habit-icon-button.habit-archive:hover {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+  color: var(--danger);
 }
 
 .habit-name {
@@ -957,7 +978,7 @@ button[type="submit"]:hover {
   font-weight: 700;
 }
 
-.habit-target {
+.habit-frequency {
   color: var(--muted);
   font-size: 0.78rem;
 }
@@ -1164,16 +1185,13 @@ button[type="submit"]:hover {
     transform: scale(1.25);
   }
 
-  .habit-card-row {
-    gap: 8px;
-  }
-
   .habit-card-actions {
-    min-width: 64px;
+    top: 10px;
+    right: 10px;
   }
 
-  .habit-card-actions .btn-sm {
-    padding: 0 6px;
+  .habit-card-copy {
+    padding-right: 96px;
   }
 
   .log-list li {

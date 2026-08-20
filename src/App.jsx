@@ -3,6 +3,7 @@ import YouPage from './components/YouPage.jsx';
 import HabitsPage from './components/HabitsPage.jsx';
 import ProfileSetupPage from './components/ProfileSetupPage.jsx';
 import SyncButton from './components/SyncButton.jsx';
+import Modal from './components/Modal.jsx';
 import { db } from './db.js';
 import './App.css';
 
@@ -87,7 +88,10 @@ export default function App() {
                 <div id="toolbar-actions" className="toolbar-actions">
                   <button
                     className={'privacy-btn' + (showPassphrase ? ' active' : '')}
-                    onClick={() => setShowPassphrase(p => !p)}
+                    onClick={() => {
+                      setShowPassphrase(p => !p);
+                      setMobileMenuOpen(false);
+                    }}
                     title="Toggle encryption passphrase"
                     type="button"
                     aria-pressed={showPassphrase}
@@ -119,24 +123,22 @@ export default function App() {
       </header>
 
       {!needsProfileSetup && showPassphrase && (
-        <div className="passphrase-bar">
-          <div className="passphrase-inner">
-            <div>
-              <strong>Encrypt your backup</strong>
-              <p>Optional. This passphrase protects the copy stored in Google Drive.</p>
-            </div>
-            <label className="passphrase-field">
-              <span className="sr-only">Encryption passphrase</span>
-              <input
-                type="password"
-                value={passphrase}
-                onChange={e => setPassphrase(e.target.value)}
-                placeholder="Enter a passphrase"
-                className="passphrase-input"
-              />
-            </label>
+        <Modal title="Privacy" onClose={() => setShowPassphrase(false)}>
+          <div className="modal-copy">
+            <strong>Encrypt your backup</strong>
+            <p>Optional. This passphrase protects the copy stored in Google Drive.</p>
           </div>
-        </div>
+          <label className="passphrase-field">
+            <span className="sr-only">Encryption passphrase</span>
+            <input
+              type="password"
+              value={passphrase}
+              onChange={e => setPassphrase(e.target.value)}
+              placeholder="Enter a passphrase"
+              className="passphrase-input"
+            />
+          </label>
+        </Modal>
       )}
 
       <main className="app-main">
@@ -144,7 +146,7 @@ export default function App() {
           <ProfileSetupPage onComplete={() => setNeedsProfileSetup(false)} />
         ) : (
           <>
-            {tab === 'you' && <YouPage settingsOpen={settingsOpen} />}
+            {tab === 'you' && <YouPage settingsOpen={settingsOpen} onCloseSettings={() => setSettingsOpen(false)} />}
             {tab === 'habits' && <HabitsPage />}
           </>
         )}

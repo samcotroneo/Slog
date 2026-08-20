@@ -325,6 +325,13 @@ button {
   min-width: 0;
 }
 
+.heading-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+
 .page-heading h1 {
   color: var(--text);
   font-size: clamp(2rem, 4vw, 3.25rem);
@@ -349,6 +356,38 @@ button {
   font-size: 0.82rem;
   line-height: 1.5;
   text-align: right;
+}
+
+.settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.settings-toggle:hover,
+.settings-toggle[aria-expanded="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+}
+
+.settings-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.settings-panel {
+  animation: page-enter 260ms ease both;
 }
 
 .content-grid {
@@ -1224,6 +1263,12 @@ button[type="submit"]:hover {
     align-items: flex-start;
     flex-direction: column;
     gap: 14px;
+  }
+
+  .heading-actions {
+    align-items: flex-start;
+    width: 100%;
+    gap: 12px;
   }
 
   .heading-note {

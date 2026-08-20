@@ -35,6 +35,7 @@ export default function YouPage() {
   const [editForm, setEditForm] = useState({ weightKg: '', waistCm: '' });
   const [heightSaved, setHeightSaved] = useState(false);
   const [goalSaved, setGoalSaved] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [error, setError] = useState('');
 
   async function loadData() {
@@ -157,64 +158,81 @@ export default function YouPage() {
           <h1>You</h1>
           <p>Keep the measures that help you understand your progress, all in one calm place.</p>
         </div>
-        <p className="heading-note">
-          {latest ? `Last logged ${new Date(latest.timestamp).toLocaleDateString()}.` : 'Your first log starts the story.'}
-        </p>
+        <div className="heading-actions">
+          <p className="heading-note">
+            {latest ? `Last logged ${new Date(latest.timestamp).toLocaleDateString()}.` : 'Your first log starts the story.'}
+          </p>
+          <button
+            type="button"
+            className="settings-toggle"
+            aria-expanded={settingsOpen}
+            aria-controls="profile-settings"
+            onClick={() => setSettingsOpen(open => !open)}
+          >
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
+              <path d="m19.4 15 .1.1a1.8 1.8 0 0 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-3.1 1.3v.2a1.8 1.8 0 0 1-3.6 0v-.2a1.8 1.8 0 0 0-3.1-1.3l-.1.1a1.8 1.8 0 1 1-2.5-2.5l.1-.1A1.8 1.8 0 0 0 4.3 12H4a1.8 1.8 0 0 1 0-3.6h.2a1.8 1.8 0 0 0 1.3-3.1l-.1-.1a1.8 1.8 0 1 1 2.5-2.5l.1.1A1.8 1.8 0 0 0 11.1 1.5h.2a1.8 1.8 0 0 1 3.6 0v.2A1.8 1.8 0 0 0 18 3l.1-.1a1.8 1.8 0 1 1 2.5 2.5l-.1.1a1.8 1.8 0 0 0 1.3 3.1h.2a1.8 1.8 0 0 1 0 3.6h-.2a1.8 1.8 0 0 0-1.3 3.1Z" />
+            </svg>
+            Settings
+          </button>
+        </div>
       </div>
 
-      <section className="card profile-panel">
-        <div className="profile-setting">
-          <div>
-            <h2 className="panel-title">Your height</h2>
-            <p className="panel-copy">Saved locally and used to calculate BMI on your trend graph.</p>
+      {settingsOpen && (
+        <section id="profile-settings" className="card profile-panel settings-panel">
+          <div className="profile-setting">
+            <div>
+              <h2 className="panel-title">Your height</h2>
+              <p className="panel-copy">Saved locally and used to calculate BMI on your trend graph.</p>
+            </div>
+            <form onSubmit={handleSaveHeight} className="profile-inline-form">
+              <label className="field-label">
+                Height in centimetres
+                <div className="unit-input">
+                  <input
+                    type="number"
+                    min="50"
+                    max="300"
+                    placeholder="e.g. 178"
+                    value={heightCm}
+                    onChange={e => setHeightCm(e.target.value)}
+                    required
+                  />
+                  <span>cm</span>
+                </div>
+              </label>
+              <button type="submit">Save height</button>
+              {heightSaved && <span className="success-msg">Height saved</span>}
+            </form>
           </div>
-          <form onSubmit={handleSaveHeight} className="profile-inline-form">
-            <label className="field-label">
-              Height in centimetres
-              <div className="unit-input">
-                <input
-                  type="number"
-                  min="50"
-                  max="300"
-                  placeholder="e.g. 178"
-                  value={heightCm}
-                  onChange={e => setHeightCm(e.target.value)}
-                  required
-                />
-                <span>cm</span>
-              </div>
-            </label>
-            <button type="submit">Save height</button>
-            {heightSaved && <span className="success-msg">Height saved</span>}
-          </form>
-        </div>
-        <div className="profile-setting">
-          <div>
-            <h2 className="panel-title">Weight goal</h2>
-            <p className="panel-copy">A private target to keep your progress pointed in the right direction.</p>
+          <div className="profile-setting">
+            <div>
+              <h2 className="panel-title">Weight goal</h2>
+              <p className="panel-copy">A private target to keep your progress pointed in the right direction.</p>
+            </div>
+            <form onSubmit={handleSaveWeightGoal} className="profile-inline-form">
+              <label className="field-label">
+                Goal weight
+                <div className="unit-input">
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="20"
+                    max="500"
+                    placeholder="e.g. 72.0"
+                    value={weightGoalKg}
+                    onChange={e => setWeightGoalKg(e.target.value)}
+                    required
+                  />
+                  <span>kg</span>
+                </div>
+              </label>
+              <button type="submit">Save goal</button>
+              {goalSaved && <span className="success-msg">Goal saved</span>}
+            </form>
           </div>
-          <form onSubmit={handleSaveWeightGoal} className="profile-inline-form">
-            <label className="field-label">
-              Goal weight
-              <div className="unit-input">
-                <input
-                  type="number"
-                  step="0.1"
-                  min="20"
-                  max="500"
-                  placeholder="e.g. 72.0"
-                  value={weightGoalKg}
-                  onChange={e => setWeightGoalKg(e.target.value)}
-                  required
-                />
-                <span>kg</span>
-              </div>
-            </label>
-            <button type="submit">Save goal</button>
-            {goalSaved && <span className="success-msg">Goal saved</span>}
-          </form>
-        </div>
-      </section>
+        </section>
+      )}
 
       {error && <p className="form-error" role="alert">{error}</p>}
 

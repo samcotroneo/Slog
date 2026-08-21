@@ -286,19 +286,9 @@ export default function HabitsPage() {
                     )}
                   </button>
                   <div className="habit-card-actions">
-                   <span
-                     className={'habit-streak' + ((streaks[h.id] ?? 0) === 0 ? ' inactive' : '')}
-                     aria-label={formatStreak(streaks[h.id] ?? 0)}
-                     title={formatStreak(streaks[h.id] ?? 0)}
-                   >
-                     <svg aria-hidden="true" viewBox="0 0 24 24">
-                       <path d="M12 22c4.4 0 7-2.9 7-6.7 0-3-1.7-5.2-4.2-7.4.1 2.1-.7 3.5-2.1 4.6.3-2.8-1.2-5.8-4.6-8.5.3 3.8-4.1 6.2-4.1 10.1C4 18.4 7.4 22 12 22Z" />
-                     </svg>
-                     <span className="streak-value">{streaks[h.id] ?? 0}</span>
-                   </span>
                    {count > 0 && (
-                      <button
-                        type="button"
+                     <button
+                       type="button"
                         className="habit-icon-button habit-undo"
                         onClick={() => handleUndoHabit(h)}
                         aria-label={`Undo last ${h.name} log`}
@@ -310,6 +300,16 @@ export default function HabitsPage() {
                         </svg>
                       </button>
                     )}
+                    <span
+                      className={'habit-streak' + ((streaks[h.id] ?? 0) === 0 ? ' inactive' : '')}
+                      aria-label={formatStreak(streaks[h.id] ?? 0)}
+                      title={formatStreak(streaks[h.id] ?? 0)}
+                    >
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M12 22c4.4 0 7-2.9 7-6.7 0-3-1.7-5.2-4.2-7.4.1 2.1-.7 3.5-2.1 4.6.3-2.8-1.2-5.8-4.6-8.5.3 3.8-4.1 6.2-4.1 10.1C4 18.4 7.4 22 12 22Z" />
+                      </svg>
+                      <span className="streak-value">{streaks[h.id] ?? 0}</span>
+                    </span>
                     {editingHabits && (
                       <button
                         type="button"

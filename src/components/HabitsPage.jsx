@@ -268,9 +268,8 @@ export default function HabitsPage() {
                     aria-label={`${h.name}: ${count} of ${h.target} completed today`}
                   >
                     <span className="habit-card-copy">
-                      <span className="habit-name">{h.name}</span>
-                      <span className="habit-meta">
-                        <span className="habit-frequency">{h.frequency ?? 'daily'}</span>
+                      <span className="habit-card-topline">
+                        <span className="habit-name">{h.name}</span>
                         <span
                           className={'habit-streak' + ((streaks[h.id] ?? 0) === 0 ? ' inactive' : '')}
                           aria-label={formatStreak(streaks[h.id] ?? 0)}
@@ -282,6 +281,7 @@ export default function HabitsPage() {
                           <span className="streak-value">{streaks[h.id] ?? 0}</span>
                         </span>
                       </span>
+                      <span className="habit-frequency">{h.frequency ?? 'daily'}</span>
                     </span>
                     {h.target > 1 && (
                       <span className="segmented-progress" role="img" aria-label={`${count} of ${h.target} completed`}>

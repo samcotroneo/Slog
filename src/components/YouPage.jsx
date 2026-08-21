@@ -34,8 +34,7 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
   const [metric, setMetric] = useState('weight');
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ weightKg: '', waistCm: '' });
-  const [heightSaved, setHeightSaved] = useState(false);
-  const [goalSaved, setGoalSaved] = useState(false);
+  const [settingsSaved, setSettingsSaved] = useState(false);
   const [error, setError] = useState('');
 
   async function loadData() {
@@ -48,41 +47,31 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
     setLogs(allLogs);
   }
 
-  async function handleSaveWeightGoal(e) {
+  async function handleSaveSettings(e) {
     e.preventDefault();
-    const value = Number(weightGoalKg);
-    if (!Number.isFinite(value) || value < 20 || value > 500) {
+    const heightValue = Number(heightCm);
+    const goalValue = Number(weightGoalKg);
+    if (!Number.isFinite(heightValue) || heightValue < 50 || heightValue > 300) {
+      setError('Enter a height between 50 and 300 cm.');
+      return;
+    }
+    if (!Number.isFinite(goalValue) || goalValue < 20 || goalValue > 500) {
       setError('Enter a goal weight between 20 and 500 kg.');
       return;
     }
 
     setError('');
     const profile = await db.profile.get(PROFILE_ID);
-    await db.profile.put({ ...profile, id: PROFILE_ID, weightGoalKg: value });
-    setWeightGoalKg(String(value));
-    setGoalSaved(true);
-    setTimeout(() => setGoalSaved(false), 2000);
+    await db.profile.put({ ...profile, id: PROFILE_ID, heightCm: heightValue, weightGoalKg: goalValue });
+    setHeightCm(String(heightValue));
+    setWeightGoalKg(String(goalValue));
+    setSettingsSaved(true);
+    setTimeout(() => setSettingsSaved(false), 2000);
   }
 
   useEffect(() => {
     loadData();
   }, []);
-
-  async function handleSaveHeight(e) {
-    e.preventDefault();
-    const value = Number(heightCm);
-    if (!Number.isFinite(value) || value < 50 || value > 300) {
-      setError('Enter a height between 50 and 300 cm.');
-      return;
-    }
-
-    setError('');
-    const profile = await db.profile.get(PROFILE_ID);
-    await db.profile.put({ ...profile, id: PROFILE_ID, heightCm: value });
-    setHeightCm(String(value));
-    setHeightSaved(true);
-    setTimeout(() => setHeightSaved(false), 2000);
-  }
 
   async function handleLogProgress(e) {
     e.preventDefault();
@@ -161,13 +150,13 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
 
       {settingsOpen && (
         <Modal title="Settings" onClose={onCloseSettings}>
-          <div id="profile-settings" className="profile-panel settings-panel">
-            <div className="profile-setting">
-              <div>
-                <h2 className="panel-title">Your height</h2>
-                <p className="panel-copy">Saved locally and used to calculate BMI on your trend graph.</p>
-              </div>
-              <form onSubmit={handleSaveHeight} className="profile-inline-form">
+          <form onSubmit={handleSaveSettings} className="settings-form">
+            <div id="profile-settings" className="profile-panel settings-panel">
+              <div className="profile-setting">
+                <div>
+                  <h2 className="panel-title">Your height</h2>
+                  <p className="panel-copy">Saved locally and used to calculate BMI on your trend graph.</p>
+                </div>
                 <label className="field-label">
                   Height in centimetres
                   <div className="unit-input">
@@ -183,16 +172,12 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
                     <span>cm</span>
                   </div>
                 </label>
-                <button type="submit">Save height</button>
-                {heightSaved && <span className="success-msg">Height saved</span>}
-              </form>
-            </div>
-            <div className="profile-setting">
-              <div>
-                <h2 className="panel-title">Weight goal</h2>
-                <p className="panel-copy">A private target to keep your progress pointed in the right direction.</p>
               </div>
-              <form onSubmit={handleSaveWeightGoal} className="profile-inline-form">
+              <div className="profile-setting">
+                <div>
+                  <h2 className="panel-title">Weight goal</h2>
+                  <p className="panel-copy">A private target to keep your progress pointed in the right direction.</p>
+                </div>
                 <label className="field-label">
                   Goal weight
                   <div className="unit-input">
@@ -209,12 +194,14 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
                     <span>kg</span>
                   </div>
                 </label>
-                <button type="submit">Save goal</button>
-                {goalSaved && <span className="success-msg">Goal saved</span>}
-              </form>
+              </div>
             </div>
-          </div>
-          {error && <p className="form-error" role="alert">{error}</p>}
+            {error && <p className="form-error" role="alert">{error}</p>}
+            <div className="settings-actions">
+              <button type="submit">Save settings</button>
+              {settingsSaved && <span className="success-msg">Settings saved</span>}
+            </div>
+          </form>
         </Modal>
       )}
 

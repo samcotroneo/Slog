@@ -8,12 +8,19 @@
       content="default-src 'self'; script-src 'self' https://accounts.google.com; connect-src 'self' https://accounts.google.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src https://accounts.google.com;"
     />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#4f46e5" />
+    <meta name="theme-color" content="#1b7f4d" />
     <title>Slog — Health Tracker</title>
     <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
+    <!--
+      THESIS: A calm green health workspace that refuses dashboard clutter and makes one daily action feel easy.
+      OWN-WORLD: Warm white surfaces, forest-green ink, thin botanical borders, quiet shadows, and practical line icons.
+      STORY: The user sees the state of their health record, chooses a surface, and completes a check-in without friction.
+      FIRST VIEWPORT: Brand and navigation sit in a quiet white rail; the active page heading leads into its primary task and supporting history.
+      FORM: Operate mode with a spacious work-surface composition, using the assigned direction seed 47ab1c8f as a constraint while honoring the user's pinned green minimalism.
+    -->
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

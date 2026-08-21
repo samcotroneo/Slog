@@ -140,7 +140,6 @@ export default function HabitsPage() {
           <h1>Habits</h1>
           <p>Small actions become useful when they are easy to return to. Keep today’s list clear and doable.</p>
         </div>
-        <p className="heading-note">Log progress by entering what you have done today.</p>
       </div>
 
       <form onSubmit={handleAddHabit} className="form-card habit-builder">

@@ -448,15 +448,6 @@ body.modal-open {
   line-height: 1.55;
 }
 
-.heading-note {
-  max-width: 22ch;
-  padding-bottom: 3px;
-  color: var(--muted-light);
-  font-size: 0.82rem;
-  line-height: 1.5;
-  text-align: right;
-}
-
 .settings-toggle {
   display: inline-flex;
   align-items: center;
@@ -1481,11 +1472,6 @@ button[type="submit"]:hover {
     align-items: flex-start;
     width: 100%;
     gap: 12px;
-  }
-
-  .heading-note {
-    padding-bottom: 0;
-    text-align: left;
   }
 
   .entry-panel,

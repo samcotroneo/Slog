@@ -148,7 +148,6 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
   ), [heightCm, logs, metric]);
 
   const selectedMetric = METRICS.find(item => item.id === metric);
-  const latest = logs.at(-1);
   const hasHeight = Number.isFinite(Number(heightCm)) && Number(heightCm) > 0;
 
   return (
@@ -158,9 +157,6 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
           <h1>You</h1>
           <p>Keep the measures that help you understand your progress, all in one calm place.</p>
         </div>
-        <p className="heading-note">
-          {latest ? `Last logged ${new Date(latest.timestamp).toLocaleDateString()}.` : 'Your first log starts the story.'}
-        </p>
       </div>
 
       {settingsOpen && (

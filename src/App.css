@@ -345,16 +345,18 @@ body.modal-open {
 
 .setup-page {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  gap: 64px;
+  gap: 32px;
   width: min(960px, 100%);
   min-height: calc(100dvh - 210px);
   margin: 0 auto;
 }
 
 .setup-intro {
-  max-width: 40ch;
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: none;
   margin: 0 auto;
   text-align: center;
 }
@@ -376,9 +378,12 @@ body.modal-open {
 }
 
 .setup-card {
+  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   gap: 22px;
+  width: min(460px, 100%);
+  justify-self: center;
   padding: 28px;
 }
 
@@ -1319,7 +1324,7 @@ button[type="submit"]:hover {
   }
 
   .setup-intro {
-    max-width: 48ch;
+    max-width: none;
   }
 
   .header-inner {

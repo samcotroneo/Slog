@@ -355,6 +355,8 @@ body.modal-open {
 
 .setup-intro {
   max-width: 40ch;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .setup-intro h1 {
@@ -367,7 +369,7 @@ body.modal-open {
 
 .setup-intro p {
   max-width: 36ch;
-  margin-top: 20px;
+  margin: 20px auto 0;
   color: var(--muted);
   font-size: 1rem;
   line-height: 1.6;

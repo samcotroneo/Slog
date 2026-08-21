@@ -549,6 +549,11 @@ body.modal-open {
   gap: 32px;
 }
 
+.profile-panel.settings-panel {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+}
+
 .profile-setting {
   display: flex;
   min-width: 0;

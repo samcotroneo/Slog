@@ -7,7 +7,7 @@ A serverless, privacy-first web app for tracking height, weight, waistline, and 
 - 📈 **You** — Set a height and weight goal, log weight and waistline together, and chart Weight, BMI, or Waistline trends
 - ✅ **Habits** — Define habits with 1–20 targets and daily, fortnightly, weekly, or monthly frequencies, then tap daily cards to log progress and build daily streaks
 - ☁️ **Drive Sync** — Last-Write-Wins sync to your Google Drive `appDataFolder` (hidden from your Drive files)
-- 🔒 **Optional AES-GCM encryption** — Encrypt the Drive backup with a passphrase so even Google can't read it
+- 🔒 **Optional AES-GCM encryption** — After starting Drive sync, choose a passphrase to encrypt the backup so even Google can't read it
 - 📴 **Offline-first PWA** — Works without internet; installable on iOS, Android, and desktop
 
 ## Architecture
@@ -63,7 +63,7 @@ npm run preview    # local preview of the production build
 
 - Health data **never leaves your device** unless you explicitly click "Sync with Drive"
 - Drive sync writes to `appDataFolder` — invisible to the user's regular Drive file list
-- Enabling the passphrase field encrypts data with AES-256-GCM (PBKDF2 key derivation) before upload
+- After starting sync, you can opt into encrypting data with AES-256-GCM (PBKDF2 key derivation) before upload
 - The Content Security Policy restricts all network requests to Google's auth/Drive endpoints only
 
 ## Project Structure

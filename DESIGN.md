@@ -101,7 +101,7 @@ The palette pairs a muted sage primary with charcoal text, cloud-gray canvas, pa
 ### Primary
 - **Sage** (`#7f9d77`, `--accent`): the primary action color used on active navigation, sync, submit buttons, and progress.
 - **Sage Dark** (`#5f7f5b`, `--accent-dark`): the readable hover and active depth of the primary.
-- **Leaf / Mist** (`#e7efe6` / `#f4f8f2`, `--accent-soft` / `--accent-wash`): pale backgrounds for selected controls, progress tracks, and privacy context.
+- **Leaf / Mist** (`#e7efe6` / `#f4f8f2`, `--accent-soft` / `--accent-wash`): pale backgrounds for selected controls, progress tracks, and backup privacy context.
 
 ### Neutral
 - **Cloud** (`#f6f7f8`, `--bg`): the page background; matches the `<html>` background so there is no visible seam before content paints.
@@ -179,7 +179,7 @@ The Weight/BMI/Waistline switcher on the You trend card is a three-way segmented
 - **Labels:** small (0.78rem), 700-weight, muted-colored, stacked above the field with an 8px gap.
 
 ### Navigation
-- Header tabs are borderless, transparent-background text buttons in muted color; the active and hovered label turns `--accent-dark`, while only the active state draws a 3px green underline bar anchored to the tab's bottom edge. On mobile the tab row drops to a full-width, equally-split bar under the header. The active tab exposes `aria-current="page"`, and the privacy toggle exposes `aria-pressed`.
+- Header tabs are borderless, transparent-background text buttons in muted color; the active and hovered label turns `--accent-dark`, while only the active state draws a 3px green underline bar anchored to the tab's bottom edge. On mobile the tab row drops to a full-width, equally-split bar under the header. The active tab exposes `aria-current="page"`; Drive sync keeps explicit accessible labels and titles, and its first-use encryption choice is presented in a protected modal.
 
 ### Progress Bar (signature component)
 A thin (7px) fully-rounded track in `--accent-soft` with a solid `--accent` fill that scales via a CSS custom property (`--progress-scale`) and animates on a 300ms `cubic-bezier(0.16, 1, 0.3, 1)` transform — the habit system's one custom, distinctive visual element.
@@ -192,7 +192,7 @@ A thin (7px) fully-rounded track in `--accent-soft` with a solid `--accent` fill
 - **Do** build hierarchy with this one font family's weight and size steps (650–800 for emphasis) rather than introducing a second typeface.
 - **Do** draw icons as inline stroke SVGs (1.8px stroke, ~18px box) matching the existing user/chart/check/lock/plus set.
 - **Do** reserve the red danger color strictly for destructive row actions (delete, archive), never for warnings or emphasis.
-- **Do** preserve the shipped accessibility state model: `aria-current` for tabs, `aria-pressed` for the privacy toggle, explicit sync labels/titles, and polite live status updates.
+- **Do** preserve the shipped accessibility state model: `aria-current` for tabs, explicit sync labels/titles, clear modal actions for backup encryption, and polite live status updates.
 
 ### Don't:
 - **Don't** introduce a hard-edged or offset drop shadow anywhere — this is a soft-ambient-shadow, hairline-border world, not a neobrutalist one.

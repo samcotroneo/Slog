@@ -3,7 +3,6 @@ import YouPage from './components/YouPage.jsx';
 import HabitsPage from './components/HabitsPage.jsx';
 import ProfileSetupPage from './components/ProfileSetupPage.jsx';
 import SyncButton from './components/SyncButton.jsx';
-import Modal from './components/Modal.jsx';
 import { db } from './db.js';
 import './App.css';
 
@@ -17,7 +16,6 @@ function Icon({ name, size = 18 }) {
     user: <><circle cx="12" cy="8" r="3.25" /><path d="M5.5 19c.7-3.1 2.85-4.75 6.5-4.75s5.8 1.65 6.5 4.75" /></>,
     chart: <><path d="M4 19V5" /><path d="M4 19h16" /><path d="m7 15 3-4 3 2 4-6" /></>,
     check: <><path d="m5 12 4.2 4.2L19 6.5" /></>,
-    lock: <><rect x="5" y="10" width="14" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></>,
     menu: <><path d="M4 7h16M4 12h16M4 17h16" /></>,
     close: <><path d="m6 6 12 12M18 6 6 18" /></>,
     settings: <><circle cx="12" cy="12" r="3.5" /><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0L6.2 6.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z" /></>,
@@ -33,8 +31,6 @@ function Icon({ name, size = 18 }) {
 
 export default function App() {
   const [tab, setTab] = useState('you');
-  const [passphrase, setPassphrase] = useState('');
-  const [showPassphrase, setShowPassphrase] = useState(false);
   const [profileReady, setProfileReady] = useState(false);
   const [needsProfileSetup, setNeedsProfileSetup] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -86,20 +82,7 @@ export default function App() {
                   <Icon name={mobileMenuOpen ? 'close' : 'menu'} size={20} />
                 </button>
                 <div id="toolbar-actions" className="toolbar-actions">
-                  <button
-                    className={'privacy-btn' + (showPassphrase ? ' active' : '')}
-                    onClick={() => {
-                      setShowPassphrase(p => !p);
-                      setMobileMenuOpen(false);
-                    }}
-                    title="Toggle encryption passphrase"
-                    type="button"
-                    aria-pressed={showPassphrase}
-                  >
-                    <Icon name="lock" size={17} />
-                    <span>Privacy</span>
-                  </button>
-                  <SyncButton passphrase={passphrase} />
+                  <SyncButton />
                   {tab === 'you' && (
                     <button
                       type="button"
@@ -121,25 +104,6 @@ export default function App() {
           )}
         </div>
       </header>
-
-      {!needsProfileSetup && showPassphrase && (
-        <Modal title="Privacy" onClose={() => setShowPassphrase(false)}>
-          <div className="modal-copy">
-            <strong>Encrypt your backup</strong>
-            <p>Optional. This passphrase protects the copy stored in Google Drive.</p>
-          </div>
-          <label className="passphrase-field">
-            <span className="sr-only">Encryption passphrase</span>
-            <input
-              type="password"
-              value={passphrase}
-              onChange={e => setPassphrase(e.target.value)}
-              placeholder="Enter a passphrase"
-              className="passphrase-input"
-            />
-          </label>
-        </Modal>
-      )}
 
       <main className="app-main">
         {needsProfileSetup ? (

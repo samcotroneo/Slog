@@ -163,6 +163,7 @@ export default function WorkoutsPage() {
 
       {activeSession ? (
         <ActiveWorkoutCard
+          key={`${activeSession.id}:${activeSetLogs.length}:${activeSession.status}`}
           activeSession={activeSession}
           activeState={data.activeState}
           exercises={data.exercises}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis
 } from 'recharts';
@@ -27,20 +27,13 @@ export default function ExerciseProgressCard({ exercises, sessions, setLogs }) {
       .sort((a, b) => a.name.localeCompare(b.name)),
     [exercises, loggedExerciseIds]
   );
-
-  useEffect(() => {
-    if (!exerciseOptions.length) {
-      setSelectedExerciseId('');
-      return;
-    }
-    if (!exerciseOptions.some(option => option.id === selectedExerciseId)) {
-      setSelectedExerciseId(exerciseOptions[0].id);
-    }
-  }, [exerciseOptions, selectedExerciseId]);
+  const resolvedExerciseId = exerciseOptions.some(option => option.id === selectedExerciseId)
+    ? selectedExerciseId
+    : (exerciseOptions[0]?.id ?? '');
 
   const chartState = useMemo(() => {
     const relevantLogs = setLogs
-      .filter(log => log.exerciseId === selectedExerciseId && completedSessionIds.has(log.sessionId))
+      .filter(log => log.exerciseId === resolvedExerciseId && completedSessionIds.has(log.sessionId))
       .sort((a, b) => (a.completedAt ?? 0) - (b.completedAt ?? 0));
 
     if (relevantLogs.length === 0) {
@@ -95,7 +88,7 @@ export default function ExerciseProgressCard({ exercises, sessions, setLogs }) {
     const summary = data.at(-1)?.value ?? null;
 
     return { data, label, unit, summary };
-  }, [completedSessionIds, selectedExerciseId, setLogs]);
+  }, [completedSessionIds, resolvedExerciseId, setLogs]);
 
   return (
     <div className="card workout-progress-card">
@@ -114,7 +107,7 @@ export default function ExerciseProgressCard({ exercises, sessions, setLogs }) {
             Exercise
             <select
               className="workout-select"
-              value={selectedExerciseId}
+              value={resolvedExerciseId}
               onChange={event => setSelectedExerciseId(event.target.value)}
             >
               {exerciseOptions.map(exercise => (

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { db } from '../db.js';
 import { nanoid } from '../utils.js';
 
@@ -53,6 +53,28 @@ function validatePositiveNumber(value, max) {
   return parsed;
 }
 
+function getTimestamp() {
+  return Date.now();
+}
+
+function buildDraftState(sessionExercises, logsBySessionExercise, previousLogsByExercise, activeState, activeSessionId) {
+  const baseDrafts = {};
+
+  sessionExercises.forEach(row => {
+    const latestCurrentLog = logsBySessionExercise[row.id]?.at(-1);
+    const previousLog = latestCurrentLog ?? previousLogsByExercise[row.exerciseId];
+    baseDrafts[row.id] = defaultDraftForRow(row, previousLog);
+  });
+
+  if (activeState?.sessionId === activeSessionId && activeState.drafts) {
+    Object.keys(activeState.drafts).forEach(key => {
+      baseDrafts[key] = { ...baseDrafts[key], ...activeState.drafts[key] };
+    });
+  }
+
+  return baseDrafts;
+}
+
 export default function ActiveWorkoutCard({
   activeSession,
   activeState,
@@ -63,7 +85,6 @@ export default function ActiveWorkoutCard({
   allSetLogs,
   onChange
 }) {
-  const [drafts, setDrafts] = useState({});
   const [error, setError] = useState('');
 
   const exerciseMap = useMemo(
@@ -91,31 +112,20 @@ export default function ActiveWorkoutCard({
 
     return grouped;
   }, [activeSession.id, activeSession.startedAt, allSetLogs]);
-
-  useEffect(() => {
-    const baseDrafts = {};
-
-    sessionExercises.forEach(row => {
-      const latestCurrentLog = logsBySessionExercise[row.id]?.at(-1);
-      const previousLog = latestCurrentLog ?? previousLogsByExercise[row.exerciseId];
-      baseDrafts[row.id] = defaultDraftForRow(row, previousLog);
-    });
-
-    if (activeState?.sessionId === activeSession.id && activeState.drafts) {
-      Object.keys(activeState.drafts).forEach(key => {
-        baseDrafts[key] = { ...baseDrafts[key], ...activeState.drafts[key] };
-      });
-    }
-
-    setDrafts(baseDrafts);
-  }, [activeSession.id, activeState?.drafts, activeState?.sessionId, logsBySessionExercise, previousLogsByExercise, sessionExercises]);
+  const [drafts, setDrafts] = useState(() => buildDraftState(
+    sessionExercises,
+    logsBySessionExercise,
+    previousLogsByExercise,
+    activeState,
+    activeSession.id
+  ));
 
   async function persistDrafts(nextDrafts) {
     await db.appState.put({
       id: ACTIVE_WORKOUT_STATE_ID,
       sessionId: activeSession.id,
       drafts: nextDrafts,
-      updatedAt: Date.now()
+      updatedAt: getTimestamp()
     });
   }
 
@@ -175,7 +185,7 @@ export default function ActiveWorkoutCard({
       exerciseId: row.exerciseId,
       prescriptionType: row.prescriptionType,
       setNumber: nextSetNumber,
-      completedAt: Date.now(),
+      completedAt: getTimestamp(),
       weightKg,
       ...payload
     });
@@ -207,7 +217,7 @@ export default function ActiveWorkoutCard({
   async function handleFinish() {
     await db.workoutSessions.update(activeSession.id, {
       status: 'completed',
-      completedAt: Date.now()
+      completedAt: getTimestamp()
     });
     await db.appState.delete(ACTIVE_WORKOUT_STATE_ID);
     await onChange();

@@ -191,7 +191,6 @@ export default function ActiveWorkoutCard({
     });
 
     setError('');
-    await persistDrafts(drafts);
     await onChange();
   }
 

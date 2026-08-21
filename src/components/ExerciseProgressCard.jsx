@@ -52,27 +52,35 @@ export default function ExerciseProgressCard({ exercises, sessions, setLogs }) {
     });
 
     const firstType = relevantLogs[0].prescriptionType ?? 'reps';
-    let label = 'Best weight';
-    let unit = 'kg';
+    const groupedLogs = Array.from(sessionGroups.values());
+    const hasAnyWeight = groupedLogs.some(logs => logs.some(log => Number.isFinite(Number(log.weightKg))));
+    const label = firstType === 'duration'
+      ? 'Best duration'
+      : firstType === 'failure'
+        ? 'Best reps to failure'
+        : hasAnyWeight
+          ? 'Best weight'
+          : 'Best reps';
+    const unit = firstType === 'duration'
+      ? 'sec'
+      : firstType === 'failure'
+        ? 'reps'
+        : hasAnyWeight
+          ? 'kg'
+          : 'reps';
 
     const data = Array.from(sessionGroups.entries()).map(([sessionId, logs]) => {
       let value = null;
 
       if (firstType === 'duration') {
-        label = 'Best duration';
-        unit = 'sec';
         value = Math.max(...logs.map(log => Number(log.durationSeconds) || 0));
       } else if (firstType === 'failure') {
-        label = 'Best reps to failure';
-        unit = 'reps';
         value = Math.max(...logs.map(log => Number(log.repsToFailure) || 0));
       } else {
         const weights = logs.map(log => Number(log.weightKg)).filter(Number.isFinite);
         if (weights.length > 0) {
           value = Math.max(...weights);
         } else {
-          label = 'Best reps';
-          unit = 'reps';
           value = Math.max(...logs.map(log => Number(log.reps) || 0));
         }
       }

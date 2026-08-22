@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import YouPage from './components/YouPage.jsx';
 import HabitsPage from './components/HabitsPage.jsx';
+import WorkoutsPage from './components/WorkoutsPage.jsx';
 import ProfileSetupPage from './components/ProfileSetupPage.jsx';
 import SyncButton from './components/SyncButton.jsx';
 import { db } from './db.js';
@@ -8,7 +9,8 @@ import './App.css';
 
 const TABS = [
   { id: 'you', label: 'You', icon: 'user' },
-  { id: 'habits', label: 'Habits', icon: 'check' }
+  { id: 'habits', label: 'Habits', icon: 'check' },
+  { id: 'workouts', label: 'Workouts', icon: 'activity' }
 ];
 
 function Icon({ name, size = 18 }) {
@@ -19,7 +21,8 @@ function Icon({ name, size = 18 }) {
     menu: <><path d="M4 7h16M4 12h16M4 17h16" /></>,
     close: <><path d="m6 6 12 12M18 6 6 18" /></>,
     settings: <><circle cx="12" cy="12" r="3.5" /><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0L6.2 6.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z" /></>,
-    plus: <><path d="M12 5v14M5 12h14" /></>
+    plus: <><path d="M12 5v14M5 12h14" /></>,
+    activity: <><path d="M3.5 13.5h3.1l2-5 3 9 2.1-5h6.8" /></>
   };
 
   return (
@@ -112,6 +115,7 @@ export default function App() {
           <>
             {tab === 'you' && <YouPage settingsOpen={settingsOpen} onCloseSettings={() => setSettingsOpen(false)} />}
             {tab === 'habits' && <HabitsPage />}
+            {tab === 'workouts' && <WorkoutsPage />}
           </>
         )}
       </main>

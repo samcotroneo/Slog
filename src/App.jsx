@@ -16,6 +16,15 @@ const TABS = [
   { id: 'workouts', label: 'Workouts', icon: 'activity' }
 ];
 
+const THEMES = [
+  { id: 'sage-calm', label: 'Sage Calm' },
+  { id: 'iron-forge', label: 'Iron Forge' },
+  { id: 'midnight-iron', label: 'Midnight Iron' },
+  { id: 'neon-beast', label: 'Neon Beast' }
+];
+
+const THEME_IDS = new Set(THEMES.map(theme => theme.id));
+
 function Icon({ name, size = 18 }) {
   const paths = {
     user: <><circle cx="12" cy="8" r="3.25" /><path d="M5.5 19c.7-3.1 2.85-4.75 6.5-4.75s5.8 1.65 6.5 4.75" /></>,
@@ -41,6 +50,19 @@ export default function App() {
   const [needsProfileSetup, setNeedsProfileSetup] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [theme, setTheme] = useState('sage-calm');
+
+  useEffect(() => {
+    const fromQuery = new URLSearchParams(window.location.search).get('theme');
+    const fromStorage = window.localStorage.getItem('slog_theme');
+    const initialTheme = [fromQuery, fromStorage].find(value => THEME_IDS.has(value)) ?? 'sage-calm';
+    setTheme(initialTheme);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem('slog_theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     db.profile.get('user_profile').then(profile => {
@@ -91,6 +113,20 @@ export default function App() {
                   <Icon name={mobileMenuOpen ? 'close' : 'menu'} size={20} />
                 </button>
                 <div id="toolbar-actions" className="toolbar-actions">
+                  <label className="theme-picker" htmlFor="theme-picker">
+                    <span>Theme</span>
+                    <select
+                      id="theme-picker"
+                      value={theme}
+                      onChange={event => setTheme(event.target.value)}
+                    >
+                      {THEMES.map(themeOption => (
+                        <option key={themeOption.id} value={themeOption.id}>
+                          {themeOption.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
                   <SyncButton />
                   <button
                     type="button"

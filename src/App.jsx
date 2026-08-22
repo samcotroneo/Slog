@@ -50,19 +50,22 @@ export default function App() {
   const [needsProfileSetup, setNeedsProfileSetup] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [theme, setTheme] = useState('sage-calm');
-
-  useEffect(() => {
-    const fromQuery = new URLSearchParams(window.location.search).get('theme');
+  const [persistTheme, setPersistTheme] = useState(() => {
+    const queryTheme = new URLSearchParams(window.location.search).get('theme');
+    return !THEME_IDS.has(queryTheme);
+  });
+  const [theme, setTheme] = useState(() => {
+    const queryTheme = new URLSearchParams(window.location.search).get('theme');
     const fromStorage = window.localStorage.getItem('slog_theme');
-    const initialTheme = [fromQuery, fromStorage].find(value => THEME_IDS.has(value)) ?? 'sage-calm';
-    setTheme(initialTheme);
-  }, []);
+    return [queryTheme, fromStorage].find(value => THEME_IDS.has(value)) ?? 'sage-calm';
+  });
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem('slog_theme', theme);
-  }, [theme]);
+    if (persistTheme) {
+      window.localStorage.setItem('slog_theme', theme);
+    }
+  }, [theme, persistTheme]);
 
   useEffect(() => {
     db.profile.get('user_profile').then(profile => {
@@ -118,7 +121,10 @@ export default function App() {
                     <select
                       id="theme-picker"
                       value={theme}
-                      onChange={event => setTheme(event.target.value)}
+                      onChange={event => {
+                        setPersistTheme(true);
+                        setTheme(event.target.value);
+                      }}
                     >
                       {THEMES.map(themeOption => (
                         <option key={themeOption.id} value={themeOption.id}>

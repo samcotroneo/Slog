@@ -96,8 +96,8 @@
 }
 
 :root[data-theme='midnight-iron'] .sync-btn:hover:not(:disabled),
-:root[data-theme='midnight-iron'] button[type="submit"]:hover,
-:root[data-theme='midnight-iron'] .workout-log-set-button:hover {
+:root[data-theme='midnight-iron'] button[type="submit"]:hover:not(:disabled),
+:root[data-theme='midnight-iron'] .workout-log-set-button:hover:not(:disabled) {
   border-color: #7f8c9a;
   background: linear-gradient(180deg, #e3e8ef 0%, #b5bfcb 12%, #87929f 48%, #68737f 52%, #9ea9b5 100%);
 }

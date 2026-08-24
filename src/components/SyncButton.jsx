@@ -24,7 +24,7 @@ function initTokenClient(onToken, onUnavailable) {
   return tokenClient;
 }
 
-export default function SyncButton() {
+function ConfiguredSyncButton() {
   const tokenClientRef = useRef(null);
   const tokenHandlerRef = useRef(null);
   const [status, setStatus] = useState('');
@@ -34,10 +34,6 @@ export default function SyncButton() {
   const [encryptionPromptOpen, setEncryptionPromptOpen] = useState(false);
   const [pendingToken, setPendingToken] = useState('');
   const [encryptionError, setEncryptionError] = useState('');
-
-  if (!CLIENT_ID) {
-    return null;
-  }
 
   function finishSync(accessToken, encryptionPassphrase) {
     syncData(accessToken, encryptionPassphrase || undefined)
@@ -169,4 +165,11 @@ export default function SyncButton() {
       )}
     </>
   );
+}
+
+export default function SyncButton() {
+  if (!CLIENT_ID) {
+    return null;
+  }
+  return <ConfiguredSyncButton />;
 }

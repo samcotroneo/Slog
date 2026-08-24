@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document captures current and future goals for adding gamification to Slog while preserving the app's calm, private, and local-first nature.
+This document captures current and future goals for adding gamification to Slog while preserving the app's calm, private, and local-first nature. It is grounded in the current product surfaces: Today, Progress, Habits, and Workouts.
 
 ## Product Guardrails
 
@@ -12,23 +12,30 @@ This document captures current and future goals for adding gamification to Slog 
 - Keep everything offline/local-first and compatible with sync.
 - Preserve the minimal design language so rewards feel integrated instead of noisy.
 
+## Current Product Foundations
+
+- Today provides one daily check-in for weight, waistline, protein, and habits, and can start or resume a workout.
+- Progress already shows weight, BMI, and waistline trends alongside protein-goal history, current and best protein streaks, and a 7-day average.
+- Habits already expose per-habit streaks and completion counts.
+- Workouts already retain completed-session history, per-set logs, and exercise progression data that can support personal bests.
+
 ## Light Gamification Goals
 
-- Expand habit streaks into milestone moments such as:
+- Expand existing habit and protein streaks into milestone moments such as:
   - first 7-day streak
   - first perfect week
   - longest streak record
-- Add simple habit summaries such as:
+- Unify simple daily and weekly summaries across habits, protein, measurements, and workouts, such as:
   - today completion
   - this week consistency
-- Add completion feedback for weight and workout logging, such as:
+- Add calm completion feedback for weight, protein, habit, and workout logging, such as:
   - logged 3 check-ins this week
   - completed 2 workouts this week
 - Add personal best markers in workouts for things already tracked, such as:
   - most sets completed
   - heaviest logged set
   - longest consistency run
-- Add a private "wins" surface that highlights recent progress across You, Habits, and Workouts.
+- Add a private "wins" surface that highlights recent progress across Today, Progress, Habits, and Workouts.
 - Add lightweight celebration states that remain calm, such as:
   - subtle badges
   - checkmarks
@@ -39,7 +46,7 @@ This document captures current and future goals for adding gamification to Slog 
 
 - Introduce a simple personal points model based on consistency events:
   - habit completion
-  - weekly check-ins
+  - daily check-ins and their weekly rollups
   - completed workouts
   - returning after missed days
 - Add levels or ranks framed as personal progress rather than competition.
@@ -55,7 +62,7 @@ This document captures current and future goals for adding gamification to Slog 
 - Add a full achievement system with categories, rarity, and progression chains.
 - Add longer arcs such as monthly journeys, personal programs, or habit mastery tracks.
 - Add cross-feature quests that connect habits, workouts, and check-ins into one progression loop.
-- Add a journal or review loop where the app summarizes completed milestones and suggests the next target.
+- Extend Progress with a journal or review loop where the app summarizes completed milestones and suggests the next target.
 - If social features are ever considered, keep them optional and privacy-safe; do not make leaderboards a default direction for the product.
 
 ## Suggested Rollout Order

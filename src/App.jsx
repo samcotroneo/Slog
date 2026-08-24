@@ -18,12 +18,16 @@ const TABS = [
 
 const THEMES = [
   { id: 'sage-calm', label: 'Sage Calm' },
-  { id: 'iron-forge', label: 'Iron Forge' },
-  { id: 'midnight-iron', label: 'Midnight Iron' },
-  { id: 'neon-beast', label: 'Neon Beast' }
+  { id: 'coffee-run', label: 'Coffee Run' },
+  { id: 'midnight-iron', label: 'Midnight Iron' }
 ];
 
 const THEME_IDS = new Set(THEMES.map(theme => theme.id));
+const THEME_ALIASES = new Map([['iron-forge', 'coffee-run']]);
+
+function normalizeTheme(value) {
+  return THEME_ALIASES.get(value) ?? value;
+}
 
 function Icon({ name, size = 18, viewBox = '0 0 24 24' }) {
   const paths = {
@@ -52,12 +56,12 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [persistTheme, setPersistTheme] = useState(() => {
-    const queryTheme = new URLSearchParams(window.location.search).get('theme');
+    const queryTheme = normalizeTheme(new URLSearchParams(window.location.search).get('theme'));
     return !THEME_IDS.has(queryTheme);
   });
   const [theme, setTheme] = useState(() => {
-    const queryTheme = new URLSearchParams(window.location.search).get('theme');
-    const fromStorage = window.localStorage.getItem('slog_theme');
+    const queryTheme = normalizeTheme(new URLSearchParams(window.location.search).get('theme'));
+    const fromStorage = normalizeTheme(window.localStorage.getItem('slog_theme'));
     return [queryTheme, fromStorage].find(value => THEME_IDS.has(value)) ?? 'sage-calm';
   });
 

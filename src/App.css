@@ -28,31 +28,31 @@
   --radius-sm: 12px;
 }
 
-:root[data-theme='iron-forge'] {
-  --accent: #b44f2a;
-  --accent-dark: #8f3b1a;
-  --accent-soft: #f6e3db;
-  --accent-wash: #fbf1ed;
-  --leaf: #f0ddd2;
-  --blush: #f5d9cc;
-  --danger: #c83f2a;
-  --danger-soft: #fdecea;
-  --bg: #f3efeb;
-  --surface: #fffaf4;
-  --surface-subtle: #f7eee7;
-  --border: #dccdc2;
-  --border-strong: #c7b29f;
-  --text: #24150f;
-  --muted: #645249;
-  --muted-light: #7a685f;
-  --shadow: 0 12px 30px rgba(46, 19, 8, 0.12);
-  --header-bg: rgba(255, 250, 244, 0.95);
-  --backdrop: rgba(31, 16, 11, 0.42);
-  --modal-shadow: 0 24px 70px rgba(46, 19, 8, 0.24);
-  --card-shadow: 0 2px 8px rgba(46, 19, 8, 0.12);
-  --focus-ring: 0 0 0 3px rgba(180, 79, 42, 0.26);
-  --celebration: #ff8f3c;
-  --celebration-shadow: rgba(255, 143, 60, 0.3);
+:root[data-theme='coffee-run'] {
+  --accent: #9c5f35;
+  --accent-dark: #734020;
+  --accent-soft: #eedcca;
+  --accent-wash: #faf2ea;
+  --leaf: #e3c3a3;
+  --blush: #efd5c4;
+  --danger: #b75245;
+  --danger-soft: #f7e4df;
+  --bg: #f3ece5;
+  --surface: #fffaf5;
+  --surface-subtle: #f7eee5;
+  --border: #deccba;
+  --border-strong: #c9af99;
+  --text: #2c1b13;
+  --muted: #705b4d;
+  --muted-light: #8b7464;
+  --shadow: 0 10px 28px rgba(60, 32, 18, 0.1);
+  --header-bg: rgba(255, 250, 245, 0.95);
+  --backdrop: rgba(30, 17, 10, 0.38);
+  --modal-shadow: 0 24px 70px rgba(60, 32, 18, 0.2);
+  --card-shadow: 0 2px 8px rgba(60, 32, 18, 0.1);
+  --focus-ring: 0 0 0 3px rgba(156, 95, 53, 0.28);
+  --celebration: #d88a4a;
+  --celebration-shadow: rgba(216, 138, 74, 0.3);
   --radius: 16px;
   --radius-sm: 12px;
 }
@@ -86,25 +86,25 @@
   --radius-sm: 12px;
 }
 
-:root[data-theme='iron-forge'] .sync-btn,
-:root[data-theme='iron-forge'] button[type="submit"],
-:root[data-theme='iron-forge'] .workout-log-set-button {
+:root[data-theme='coffee-run'] .sync-btn,
+:root[data-theme='coffee-run'] button[type="submit"],
+:root[data-theme='coffee-run'] .workout-log-set-button {
   padding: 12px 24px;
-  border: 1px solid #2b160d;
+  border: 1px solid #3f2114;
   border-radius: 6px;
-  background: linear-gradient(180deg, #4f2b18 0%, #93613a 49%, #361b0e 51%, #93613a 100%);
+  background: linear-gradient(180deg, #5f321f 0%, #bb8155 49%, #3b1d12 51%, #bb8155 100%);
   color: #fff;
   font-weight: bold;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 6px rgba(46, 19, 8, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 4px 6px rgba(63, 32, 18, 0.32);
   transition: all 0.2s ease;
 }
 
-:root[data-theme='iron-forge'] .sync-btn:hover:not(:disabled),
-:root[data-theme='iron-forge'] button[type="submit"]:hover:not(:disabled),
-:root[data-theme='iron-forge'] .workout-log-set-button:hover:not(:disabled) {
-  border-color: #6d442c;
-  background: linear-gradient(180deg, #62371f 0%, #a06d43 49%, #452412 51%, #a06d43 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 8px rgba(46, 19, 8, 0.4);
+:root[data-theme='coffee-run'] .sync-btn:hover:not(:disabled),
+:root[data-theme='coffee-run'] button[type="submit"]:hover:not(:disabled),
+:root[data-theme='coffee-run'] .workout-log-set-button:hover:not(:disabled) {
+  border-color: #7f4f31;
+  background: linear-gradient(180deg, #754125 0%, #ce976a 49%, #4c2518 51%, #ce976a 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 8px rgba(63, 32, 18, 0.38);
 }
 
 :root[data-theme='midnight-iron'] .sync-btn,
@@ -126,77 +126,6 @@
   border-color: #7f8c9a;
   background: linear-gradient(180deg, #34495e 0%, #5d81a3 49%, #212f3d 51%, #5d81a3 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 8px rgba(0, 0, 0, 0.4);
-}
-
-:root[data-theme='neon-beast'] {
-  --accent: #d000a7;
-  --accent-dark: #ff7ae4;
-  --accent-soft: #3a104f;
-  --accent-wash: #1b0b32;
-  --leaf: #182d63;
-  --blush: #42143f;
-  --danger: #ff5c91;
-  --danger-soft: #42112d;
-  --bg: #08051a;
-  --surface: #140b2b;
-  --surface-subtle: #0e0720;
-  --border: #3b2058;
-  --border-strong: #64358a;
-  --text: #f9edff;
-  --muted: #c2a7d8;
-  --muted-light: #ddc8ed;
-  --shadow: 0 10px 28px rgba(0, 0, 0, 0.52);
-  --header-bg: rgba(20, 11, 43, 0.95);
-  --backdrop: rgba(4, 2, 15, 0.72);
-  --modal-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.44);
-  --focus-ring: 0 0 0 3px rgba(255, 43, 214, 0.34);
-  --celebration: #14e5ff;
-  --celebration-shadow: rgba(20, 229, 255, 0.34);
-  --radius: 16px;
-  --radius-sm: 12px;
-}
-
-:root[data-theme='neon-beast'] .sync-btn,
-:root[data-theme='neon-beast'] button[type="submit"],
-:root[data-theme='neon-beast'] .workout-log-set-button {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: #fff;
-}
-
-:root[data-theme='neon-beast'] .sync-btn:hover:not(:disabled),
-:root[data-theme='neon-beast'] button[type="submit"]:hover,
-:root[data-theme='neon-beast'] .workout-log-set-button:hover {
-  border-color: #a70085;
-  background: #a70085;
-  color: #fff;
-}
-
-:root[data-theme='neon-beast'] .sync-btn {
-  border-color: var(--celebration);
-  background: var(--celebration);
-  color: #08051a;
-  box-shadow: 0 0 14px rgba(20, 229, 255, 0.22);
-}
-
-:root[data-theme='neon-beast'] .sync-btn:hover:not(:disabled) {
-  border-color: #0bb8d0;
-  background: #0bb8d0;
-  color: #08051a;
-}
-
-:root[data-theme='neon-beast'] .theme-picker > svg {
-  color: var(--celebration);
-}
-
-:root[data-theme='neon-beast'] .tab-btn:hover,
-:root[data-theme='neon-beast'] .tab-btn.active {
-  color: var(--celebration);
-}
-
-:root[data-theme='neon-beast'] .tab-btn.active::after {
-  background: var(--celebration);
 }
 
 *,

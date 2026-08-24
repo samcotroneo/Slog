@@ -48,6 +48,10 @@ npm run build      # outputs to dist/
 npm run preview    # local preview of the production build
 ```
 
+### Release Versioning
+
+Every GitHub Pages workflow run increments the patch version in `package.json` and `package-lock.json`, commits the release back to the triggering branch, and builds that version for deployment. The release commit includes `[skip ci]` so it does not start another deployment. The current release version is shown in Settings and is included in the generated PWA manifest.
+
 ### Deploy to GitHub Pages
 
 1. Enable GitHub Pages (Settings → Pages → Source: **GitHub Actions**)
@@ -89,7 +93,7 @@ src/
   App.jsx
   main.jsx
 public/
-  manifest.json         # PWA manifest
+  manifest.webmanifest  # generated PWA manifest with the current app version
   icons/                # App icons
 .github/workflows/
   deploy.yml            # GitHub Pages CD pipeline

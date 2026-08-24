@@ -996,6 +996,12 @@ body.modal-open {
   gap: 12px;
 }
 
+.app-version {
+  margin: -12px 0 0;
+  color: var(--muted-light);
+  font-size: 0.78rem;
+}
+
 .unit-input {
   display: flex;
   align-items: center;

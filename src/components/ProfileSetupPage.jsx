@@ -6,12 +6,14 @@ const PROFILE_ID = 'user_profile';
 export default function ProfileSetupPage({ onComplete }) {
   const [heightCm, setHeightCm] = useState('');
   const [weightGoalKg, setWeightGoalKg] = useState('');
+  const [proteinGoalGrams, setProteinGoalGrams] = useState('');
   const [error, setError] = useState('');
 
   async function handleSubmit(e) {
     e.preventDefault();
     const height = Number(heightCm);
     const weightGoal = Number(weightGoalKg);
+    const proteinGoal = Number(proteinGoalGrams);
 
     if (!Number.isFinite(height) || height < 50 || height > 300) {
       setError('Enter a height between 50 and 300 cm.');
@@ -23,11 +25,17 @@ export default function ProfileSetupPage({ onComplete }) {
       return;
     }
 
+    if (!Number.isInteger(proteinGoal) || proteinGoal < 1 || proteinGoal > 500) {
+      setError('Enter a daily protein target between 1 and 500 grams.');
+      return;
+    }
+
     setError('');
     await db.profile.put({
       id: PROFILE_ID,
       heightCm: height,
       weightGoalKg: weightGoal,
+      proteinGoalGrams: proteinGoal,
       setupComplete: true
     });
     onComplete();
@@ -37,7 +45,7 @@ export default function ProfileSetupPage({ onComplete }) {
     <div className="setup-page">
       <div className="setup-intro">
         <h1>Let&apos;s make it about you.</h1>
-        <p>We know taking control of your health can be a slog, the first step is to start taking notice. Let&apos;s set a couple of baselines to make logging easier.</p>
+        <p>We know taking control of your health can be a slog, the first step is to start taking notice. Let&apos;s set your baselines and a daily protein target to make logging easier.</p>
       </div>
 
       <form className="card setup-card" onSubmit={handleSubmit}>
@@ -72,6 +80,22 @@ export default function ProfileSetupPage({ onComplete }) {
                 required
               />
               <span>kg</span>
+            </div>
+          </label>
+
+          <label className="field-label">
+            Daily protein target
+            <div className="unit-input">
+              <input
+                type="number"
+                min="1"
+                max="500"
+                placeholder="e.g. 140"
+                value={proteinGoalGrams}
+                onChange={e => setProteinGoalGrams(e.target.value)}
+                required
+              />
+              <span>g</span>
             </div>
           </label>
         </div>

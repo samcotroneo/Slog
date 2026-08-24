@@ -518,6 +518,257 @@ body.modal-open {
   gap: 20px;
 }
 
+.today-date {
+  padding-bottom: 4px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.daily-checkin {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.daily-checkin > .section-heading {
+  align-items: flex-start;
+}
+
+.daily-checkin .section-heading .panel-copy {
+  margin-top: 7px;
+}
+
+.checkin-section {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--accent-wash);
+}
+
+.checkin-section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.checkin-section-heading h3 {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 720;
+}
+
+.checkin-section-heading p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.checkin-section .progress-fields {
+  margin-top: 0;
+}
+
+.checkin-section > button[type="submit"] {
+  align-self: flex-start;
+}
+
+.protein-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.protein-total strong {
+  color: var(--text);
+  font-size: 1.8rem;
+  font-weight: 760;
+  line-height: 1;
+}
+
+.protein-total span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.protein-quick-add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.protein-preset {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--accent-soft);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 750;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.protein-preset:hover,
+.protein-preset:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+  transform: translateY(-1px);
+}
+
+.protein-custom-toggle {
+  min-height: 44px;
+  padding: 0 14px;
+}
+
+.protein-recent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.protein-recent-label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.protein-preset-recent {
+  background: var(--accent-wash);
+}
+
+.protein-clear-button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.protein-custom-entry {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.protein-custom-entry .field-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.measurements-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.measurements-panel .section-heading {
+  align-items: flex-start;
+}
+
+.measurements-panel .section-heading .panel-copy,
+.measurements-panel .progress-fields {
+  margin-top: 0;
+}
+
+.measurements-panel > button {
+  align-self: flex-start;
+}
+
+.checkin-habits,
+.checkin-workouts {
+  background: var(--surface);
+}
+
+.today-habit-list,
+.today-workout-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.today-habit-row,
+.today-workout-option {
+  min-width: 0;
+  padding: 13px 0;
+  border-top: 1px solid var(--border);
+}
+
+.today-habit-row {
+  padding: 12px 0;
+}
+
+.today-workout-option > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.today-workout-option strong {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 720;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.today-workout-option span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.checkin-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 4px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.workout-session-callout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--accent-wash);
+}
+
+.workout-session-callout strong {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 720;
+}
+
+.workout-session-callout span {
+  color: var(--accent-dark);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.today-workout-option > .btn-sm {
+  flex: 0 0 auto;
+}
+
 .content-grid > *,
 .card,
 .form-card,
@@ -974,15 +1225,10 @@ button[type="submit"]:hover {
   gap: 10px;
 }
 
-.picker-label {
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
 .times-picker {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
 }
 
@@ -1112,6 +1358,58 @@ button[type="submit"]:hover {
 
 .habit-card {
   padding: 28px;
+}
+
+.habit-library-card .section-heading {
+  align-items: flex-start;
+}
+
+.habit-library-card .section-heading .panel-copy {
+  margin-top: 7px;
+}
+
+.habit-config-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(220px, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+}
+
+.habit-config-copy,
+.habit-config-stats {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.habit-config-copy strong {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 720;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.habit-config-copy span,
+.habit-config-stats span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.habit-config-stats {
+  flex-direction: row;
+  gap: 14px;
+}
+
+.habit-config-stats strong {
+  color: var(--accent-dark);
+  font-weight: 750;
+}
+
+.habit-config-actions {
+  position: static;
 }
 
 .habit-list {
@@ -1347,7 +1645,21 @@ button[type="submit"]:hover {
   padding: 16px;
 }
 
-.workout-select,
+.workout-select {
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  outline: none;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+ }
+
 .active-exercise-inputs input {
   width: 100%;
   min-height: 48px;
@@ -1547,9 +1859,16 @@ button[type="submit"]:hover {
   transition: background 160ms ease, transform 160ms ease;
 }
 
-.workout-log-set-button:hover {
+.workout-log-set-button:hover:not(:disabled) {
   background: var(--accent-dark);
   transform: translateY(-1px);
+}
+
+.workout-log-set-button:disabled {
+  background: var(--accent-soft);
+  color: var(--muted);
+  cursor: default;
+  opacity: 0.8;
 }
 
 .logged-set-list {
@@ -1790,6 +2109,10 @@ button[type="submit"]:hover {
     gap: 14px;
   }
 
+  .today-date {
+    padding-bottom: 0;
+  }
+
   .heading-actions {
     align-items: flex-start;
     width: 100%;
@@ -1823,6 +2146,44 @@ button[type="submit"]:hover {
   .progress-fields {
     grid-template-columns: 1fr;
     margin-top: 22px;
+  }
+
+  .checkin-section {
+    padding: 16px;
+  }
+
+  .checkin-section > button[type="submit"],
+  .checkin-empty > button {
+    width: 100%;
+  }
+
+  .checkin-empty,
+  .workout-session-callout,
+  .today-workout-option {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .protein-custom-entry {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .protein-custom-entry > button {
+    width: 100%;
+  }
+
+  .habit-config-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .habit-config-stats {
+    flex-direction: row;
+  }
+
+  .habit-config-actions {
+    justify-content: flex-start;
   }
 
   .profile-fields {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { db } from '../db.js';
 import { nanoid, todayISO } from '../utils.js';
 
-const FREQUENCIES = ['daily', 'fortnightly', 'weekly', 'monthly'];
+const FREQUENCIES = ['daily', 'weekly', 'fortnightly', 'monthly'];
 
 function loggedCount(log, target) {
   const value = Number(log?.value);
@@ -33,14 +33,10 @@ function calculateStreak(logs, target, endDate) {
   return streak;
 }
 
-function formatStreak(streak) {
-  return `${streak} ${streak === 1 ? 'day' : 'days'} streak`;
-}
-
 export default function HabitsPage() {
   const [habits, setHabits] = useState([]);
-  const [todayLogs, setTodayLogs] = useState({});
   const [streaks, setStreaks] = useState({});
+  const [completionCounts, setCompletionCounts] = useState({});
   const [newHabit, setNewHabit] = useState({ name: '', target: 1, frequency: 'daily' });
   const [habitError, setHabitError] = useState('');
   const [editingHabits, setEditingHabits] = useState(false);
@@ -54,11 +50,9 @@ export default function HabitsPage() {
       db.habits.where('active').equals(1).toArray(),
       db.habitLogs.toArray()
     ]);
-    const todayMap = {};
     const logsByHabit = {};
 
     logs.forEach(log => {
-      if (log.date === today) todayMap[log.habitId] = log;
       if (!logsByHabit[log.habitId]) logsByHabit[log.habitId] = [];
       logsByHabit[log.habitId].push(log);
     });
@@ -69,8 +63,13 @@ export default function HabitsPage() {
     });
 
     setHabits(activeHabits);
-    setTodayLogs(todayMap);
     setStreaks(streakMap);
+    setCompletionCounts(Object.fromEntries(
+      activeHabits.map(habit => [
+        habit.id,
+        (logsByHabit[habit.id] ?? []).reduce((total, log) => total + loggedCount(log, habit.target), 0)
+      ])
+    ));
   }
 
   useEffect(() => {
@@ -102,37 +101,6 @@ export default function HabitsPage() {
     await loadHabitData();
   }
 
-  async function handleLogHabit(habit) {
-    const existing = todayLogs[habit.id];
-    const currentValue = loggedCount(existing, habit.target);
-    if (currentValue >= habit.target) return;
-
-    if (existing) {
-      await db.habitLogs.update(existing.id, { value: currentValue + 1 });
-    } else {
-      await db.habitLogs.add({
-        id: nanoid(),
-        habitId: habit.id,
-        value: 1,
-        date: today
-      });
-    }
-    await loadHabitData();
-  }
-
-  async function handleUndoHabit(habit) {
-    const existing = todayLogs[habit.id];
-    if (!existing) return;
-
-    const currentValue = loggedCount(existing, habit.target);
-    if (currentValue <= 1) {
-      await db.habitLogs.delete(existing.id);
-    } else {
-      await db.habitLogs.update(existing.id, { value: currentValue - 1 });
-    }
-    await loadHabitData();
-  }
-
   return (
     <div className="page page-habits">
       <div className="page-heading">
@@ -154,7 +122,6 @@ export default function HabitsPage() {
           />
         </label>
         <div className="habit-picker-block">
-          <span className="picker-label">How many times?</span>
           <div className="times-picker">
             <div className="number-carousel" role="radiogroup" aria-label="How many times">
               <button
@@ -212,7 +179,6 @@ export default function HabitsPage() {
           </div>
         </div>
         <div className="habit-picker-block">
-          <span className="picker-label">How often?</span>
           <div className="frequency-picker" role="radiogroup" aria-label="How often">
             {FREQUENCIES.map(frequency => (
               <button
@@ -232,11 +198,14 @@ export default function HabitsPage() {
         {habitError && <p className="form-error" role="alert">{habitError}</p>}
       </form>
 
-      <div className="card habit-card">
+      <div className="card habit-card habit-library-card">
         <div className="section-heading">
-          <h2>Today</h2>
+          <div>
+            <h2>Habit library</h2>
+            <p className="panel-copy">Configure the routines that appear in your daily check-in.</p>
+          </div>
           <div className="today-heading-actions">
-            <span>{new Date(`${today}T12:00:00`).toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}</span>
+            <span>{habits.length} active</span>
             <button
               type="button"
               className={'today-edit-button' + (editingHabits ? ' active' : '')}
@@ -253,78 +222,22 @@ export default function HabitsPage() {
         {habits.length === 0 && <p className="muted">No active habits. Add one above.</p>}
         <ul className="habit-list">
           {habits.map(h => {
-            const log = todayLogs[h.id];
-            const count = loggedCount(log, h.target);
-            const isComplete = count >= h.target;
             return (
-              <li key={h.id}>
-                <div className={'habit-tap-card' + (isComplete ? ' complete' : '')}>
-                  <button
-                    type="button"
-                    className="habit-log-button"
-                    onClick={() => handleLogHabit(h)}
-                    aria-pressed={isComplete}
-                    aria-label={`${h.name}: ${count} of ${h.target} completed today`}
-                  >
-                    <span className="habit-card-copy">
-                      <span className="habit-card-topline">
-                        <span className="habit-name">{h.name}</span>
-                      </span>
-                      <span className="habit-frequency">{h.frequency ?? 'daily'}</span>
-                    </span>
-                    {h.target > 1 && (
-                      <span className="segmented-progress" role="img" aria-label={`${count} of ${h.target} completed`}>
-                        {Array.from({ length: h.target }, (_, index) => (
-                          <span
-                            key={index}
-                            className={'progress-segment' + (index < count ? ' filled' : '')}
-                            aria-hidden="true"
-                          />
-                        ))}
-                      </span>
-                    )}
-                  </button>
-                  <div className="habit-card-actions">
-                   {count > 0 && (
-                     <button
-                       type="button"
-                        className="habit-icon-button habit-undo"
-                        onClick={() => handleUndoHabit(h)}
-                        aria-label={`Undo last ${h.name} log`}
-                        title="Undo last log"
-                      >
-                        <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M9 7 5 11l4 4" />
-                          <path d="M5 11h8a6 6 0 0 1 0 12h-2" />
-                        </svg>
-                      </button>
-                    )}
-                    <span
-                      className={'habit-streak' + ((streaks[h.id] ?? 0) === 0 ? ' inactive' : '')}
-                      aria-label={formatStreak(streaks[h.id] ?? 0)}
-                      title={formatStreak(streaks[h.id] ?? 0)}
-                    >
-                      <svg aria-hidden="true" viewBox="0 0 24 24">
-                        <path d="M12 22c4.4 0 7-2.9 7-6.7 0-3-1.7-5.2-4.2-7.4.1 2.1-.7 3.5-2.1 4.6.3-2.8-1.2-5.8-4.6-8.5.3 3.8-4.1 6.2-4.1 10.1C4 18.4 7.4 22 12 22Z" />
-                      </svg>
-                      <span className="streak-value">{streaks[h.id] ?? 0}</span>
-                    </span>
-                    {editingHabits && (
-                      <button
-                        type="button"
-                        className="habit-icon-button habit-archive"
-                        onClick={() => handleArchive(h.id)}
-                        aria-label={`Archive ${h.name}`}
-                        title="Archive habit"
-                      >
-                        <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M4 8h16v11H4z" />
-                          <path d="m3 8 2-4h14l2 4" />
-                          <path d="M9 12h6" />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
+              <li key={h.id} className="habit-config-row">
+                <div className="habit-config-copy">
+                  <strong>{h.name}</strong>
+                  <span>{h.frequency ?? 'daily'} · {h.target} {h.target === 1 ? 'time' : 'times'} per period</span>
+                </div>
+                <div className="habit-config-stats">
+                  <span><strong>{streaks[h.id] ?? 0}</strong> day streak</span>
+                  <span><strong>{completionCounts[h.id] ?? 0}</strong> completions</span>
+                </div>
+                <div className="habit-card-actions habit-config-actions">
+                  {editingHabits && (
+                   <button type="button" className="btn-sm danger" onClick={() => handleArchive(h.id)} aria-label={`Archive ${h.name}`}>
+                     Archive
+                   </button>
+                  )}
                 </div>
               </li>
             );

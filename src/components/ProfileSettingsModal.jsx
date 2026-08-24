@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { db } from '../db.js';
 import Modal from './Modal.jsx';
+import { APP_VERSION } from '../version.js';
 
 const PROFILE_ID = 'user_profile';
 
@@ -128,6 +129,7 @@ export default function ProfileSettingsModal({ onClose }) {
           <button type="submit">Save settings</button>
           {settingsSaved && <span className="success-msg">Settings saved</span>}
         </div>
+        <p className="app-version">Version {APP_VERSION}</p>
       </form>
     </Modal>
   );

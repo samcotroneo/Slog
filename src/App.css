@@ -734,9 +734,17 @@ body.modal-open {
 
 .protein-total {
   display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-top: 2px;
+}
+
+.protein-total-value {
+  display: flex;
   align-items: baseline;
   gap: 8px;
-  padding-top: 2px;
 }
 
 .protein-total strong {
@@ -749,6 +757,13 @@ body.modal-open {
 .protein-total span {
   color: var(--muted);
   font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.protein-goal {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.78rem;
   font-weight: 700;
 }
 
@@ -1196,6 +1211,86 @@ button[type="submit"]:hover {
 
 .list-card {
   padding: 26px;
+}
+
+.protein-progress-card .section-heading {
+  align-items: flex-start;
+}
+
+.protein-progress-card .panel-copy {
+  margin-top: 7px;
+}
+
+.protein-streak-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 22px 0 6px;
+}
+
+.protein-streak-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--accent-wash);
+}
+
+.protein-streak-stat strong {
+  color: var(--accent-dark);
+  font-size: 1.35rem;
+  font-weight: 760;
+  line-height: 1;
+}
+
+.protein-streak-stat span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.protein-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.protein-history-list li {
+  padding: 15px 0;
+  border-top: 1px solid var(--border);
+}
+
+.protein-history-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.protein-history-date,
+.protein-history-status {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.protein-history-row > strong {
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+
+.protein-history-status {
+  min-width: 88px;
+  text-align: right;
+}
+
+.protein-history-status.complete {
+  color: var(--accent-dark);
+  font-weight: 700;
 }
 
 .log-list,
@@ -2342,6 +2437,21 @@ button[type="submit"]:hover {
 
   .habit-config-stats {
     flex-direction: row;
+  }
+
+  .protein-history-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 12px;
+  }
+
+  .protein-streak-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .protein-history-status {
+    grid-column: 1 / -1;
+    min-width: 0;
+    text-align: left;
   }
 
   .habit-config-actions {

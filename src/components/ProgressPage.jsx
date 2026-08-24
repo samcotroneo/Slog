@@ -3,8 +3,6 @@ import {
   CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis
 } from 'recharts';
 import { db } from '../db.js';
-import { nanoid } from '../utils.js';
-import Modal from './Modal.jsx';
 
 const PROFILE_ID = 'user_profile';
 const METRICS = [
@@ -26,15 +24,12 @@ function formatValue(value, unit) {
   return value == null ? '—' : `${value} ${unit}`.trim();
 }
 
-export default function YouPage({ settingsOpen, onCloseSettings }) {
+export default function ProgressPage() {
   const [heightCm, setHeightCm] = useState('');
-  const [weightGoalKg, setWeightGoalKg] = useState('');
   const [logs, setLogs] = useState([]);
-  const [progress, setProgress] = useState({ weightKg: '', waistCm: '' });
   const [metric, setMetric] = useState('weight');
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ weightKg: '', waistCm: '' });
-  const [settingsSaved, setSettingsSaved] = useState(false);
   const [error, setError] = useState('');
 
   async function loadData() {
@@ -43,55 +38,12 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
       db.weightLogs.orderBy('timestamp').toArray()
     ]);
     setHeightCm(profile?.heightCm ?? '');
-    setWeightGoalKg(profile?.weightGoalKg ?? '');
     setLogs(allLogs);
-  }
-
-  async function handleSaveSettings(e) {
-    e.preventDefault();
-    const heightValue = Number(heightCm);
-    const goalValue = Number(weightGoalKg);
-    if (!Number.isFinite(heightValue) || heightValue < 50 || heightValue > 300) {
-      setError('Enter a height between 50 and 300 cm.');
-      return;
-    }
-    if (!Number.isFinite(goalValue) || goalValue < 20 || goalValue > 500) {
-      setError('Enter a goal weight between 20 and 500 kg.');
-      return;
-    }
-
-    setError('');
-    const profile = await db.profile.get(PROFILE_ID);
-    await db.profile.put({ ...profile, id: PROFILE_ID, heightCm: heightValue, weightGoalKg: goalValue });
-    setHeightCm(String(heightValue));
-    setWeightGoalKg(String(goalValue));
-    setSettingsSaved(true);
-    setTimeout(() => setSettingsSaved(false), 2000);
   }
 
   useEffect(() => {
     loadData();
   }, []);
-
-  async function handleLogProgress(e) {
-    e.preventDefault();
-    const weightKg = Number(progress.weightKg);
-    const waistCm = Number(progress.waistCm);
-    if (!Number.isFinite(weightKg) || weightKg < 20 || weightKg > 500 || !Number.isFinite(waistCm) || waistCm < 20 || waistCm > 300) {
-      setError('Enter a weight between 20 and 500 kg and a waistline between 20 and 300 cm.');
-      return;
-    }
-
-    setError('');
-    await db.weightLogs.add({
-      id: nanoid(),
-      weightKg,
-      waistCm,
-      timestamp: Date.now()
-    });
-    setProgress({ weightKg: '', waistCm: '' });
-    await loadData();
-  }
 
   function startEditing(log) {
     setEditingId(log.id);
@@ -140,117 +92,17 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
   const hasHeight = Number.isFinite(Number(heightCm)) && Number(heightCm) > 0;
 
   return (
-    <div className="page page-you">
+    <div className="page page-progress">
       <div className="page-heading">
         <div>
-          <h1>You</h1>
-          <p>Keep the measures that help you understand your progress, all in one calm place.</p>
+          <h1>Progress</h1>
+          <p>Review the measures that help you understand your progress, and keep your private target in view.</p>
         </div>
       </div>
 
-      {settingsOpen && (
-        <Modal title="Settings" onClose={onCloseSettings}>
-          <form onSubmit={handleSaveSettings} className="settings-form">
-            <div id="profile-settings" className="profile-panel settings-panel">
-              <div className="profile-setting">
-                <div>
-                  <h2 className="panel-title">Your height</h2>
-                  <p className="panel-copy">Saved locally and used to calculate BMI on your trend graph.</p>
-                </div>
-                <label className="field-label">
-                  Height in centimetres
-                  <div className="unit-input">
-                    <input
-                      type="number"
-                      min="50"
-                      max="300"
-                      placeholder="e.g. 178"
-                      value={heightCm}
-                      onChange={e => setHeightCm(e.target.value)}
-                      required
-                    />
-                    <span>cm</span>
-                  </div>
-                </label>
-              </div>
-              <div className="profile-setting">
-                <div>
-                  <h2 className="panel-title">Weight goal</h2>
-                  <p className="panel-copy">A private target to keep your progress pointed in the right direction.</p>
-                </div>
-                <label className="field-label">
-                  Goal weight
-                  <div className="unit-input">
-                    <input
-                      type="number"
-                      step="0.1"
-                      min="20"
-                      max="500"
-                      placeholder="e.g. 72.0"
-                      value={weightGoalKg}
-                      onChange={e => setWeightGoalKg(e.target.value)}
-                      required
-                    />
-                    <span>kg</span>
-                  </div>
-                </label>
-              </div>
-            </div>
-            {error && <p className="form-error" role="alert">{error}</p>}
-            <div className="settings-actions">
-              <button type="submit">Save settings</button>
-              {settingsSaved && <span className="success-msg">Settings saved</span>}
-            </div>
-          </form>
-        </Modal>
-      )}
+      {error && <p className="form-error" role="alert">{error}</p>}
 
-      {!settingsOpen && error && <p className="form-error" role="alert">{error}</p>}
-
-      <div className="content-grid">
-        <form onSubmit={handleLogProgress} className="entry-panel progress-panel">
-          <div>
-            <h2 className="panel-title">Log my progress</h2>
-            <p className="panel-copy">Record your weight and waistline together so the trend tells a fuller story.</p>
-          </div>
-          <div className="progress-fields">
-            <label className="field-label">
-              Weight
-              <div className="unit-input">
-                <input
-                  type="number"
-                  step="0.1"
-                  min="20"
-                  max="500"
-                  placeholder="e.g. 72.4"
-                  value={progress.weightKg}
-                  onChange={e => setProgress(current => ({ ...current, weightKg: e.target.value }))}
-                  required
-                />
-                <span>kg</span>
-              </div>
-            </label>
-            <label className="field-label">
-              Waistline
-              <div className="unit-input">
-                <input
-                  type="number"
-                  step="0.1"
-                  min="20"
-                  max="300"
-                  placeholder="e.g. 84"
-                  value={progress.waistCm}
-                  onChange={e => setProgress(current => ({ ...current, waistCm: e.target.value }))}
-                  required
-                />
-                <span>cm</span>
-              </div>
-            </label>
-          </div>
-          <button type="submit">Log progress</button>
-        </form>
-
-        <div className="card chart-card trend-card">
+      <div className="card chart-card trend-card progress-trend-card">
           <div className="chart-heading">
             <h2>Trend</h2>
             <span>{selectedMetric.label}</span>
@@ -290,7 +142,6 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
             </div>
           )}
         </div>
-      </div>
 
       <div className="card list-card">
         <div className="section-heading">
@@ -299,7 +150,7 @@ export default function YouPage({ settingsOpen, onCloseSettings }) {
         </div>
         {logs.length === 0 ? (
           <div className="empty-state">
-            <p>Start with today’s progress. You can edit the entry whenever you need to.</p>
+            <p>Your measurement entries will appear here. You can edit them whenever you need to.</p>
           </div>
         ) : (
           <ul className="log-list">

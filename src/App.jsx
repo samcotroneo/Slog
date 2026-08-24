@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
-import YouPage from './components/YouPage.jsx';
+import TodayPage from './components/TodayPage.jsx';
+import ProgressPage from './components/ProgressPage.jsx';
 import HabitsPage from './components/HabitsPage.jsx';
 import WorkoutsPage from './components/WorkoutsPage.jsx';
 import ProfileSetupPage from './components/ProfileSetupPage.jsx';
+import ProfileSettingsModal from './components/ProfileSettingsModal.jsx';
 import SyncButton from './components/SyncButton.jsx';
 import { db } from './db.js';
 import './App.css';
 
 const TABS = [
-  { id: 'you', label: 'You', icon: 'user' },
+  { id: 'today', label: 'Today', icon: 'check' },
+  { id: 'progress', label: 'Progress', icon: 'chart' },
   { id: 'habits', label: 'Habits', icon: 'check' },
   { id: 'workouts', label: 'Workouts', icon: 'activity' }
 ];
@@ -33,7 +36,7 @@ function Icon({ name, size = 18 }) {
 }
 
 export default function App() {
-  const [tab, setTab] = useState('you');
+  const [tab, setTab] = useState('today');
   const [profileReady, setProfileReady] = useState(false);
   const [needsProfileSetup, setNeedsProfileSetup] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -64,7 +67,10 @@ export default function App() {
                   <button
                     key={t.id}
                     className={'tab-btn' + (tab === t.id ? ' active' : '')}
-                    onClick={() => setTab(t.id)}
+                    onClick={() => {
+                      setTab(t.id);
+                      setSettingsOpen(false);
+                    }}
                     type="button"
                     aria-current={tab === t.id ? 'page' : undefined}
                   >
@@ -86,21 +92,19 @@ export default function App() {
                 </button>
                 <div id="toolbar-actions" className="toolbar-actions">
                   <SyncButton />
-                  {tab === 'you' && (
-                    <button
-                      type="button"
-                      className={'settings-toggle toolbar-settings' + (settingsOpen ? ' active' : '')}
-                      aria-expanded={settingsOpen}
-                      aria-controls="profile-settings"
-                      onClick={() => {
-                        setSettingsOpen(open => !open);
-                        setMobileMenuOpen(false);
-                      }}
-                    >
-                      <Icon name="settings" size={17} />
-                      <span>Settings</span>
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    className={'settings-toggle toolbar-settings' + (settingsOpen ? ' active' : '')}
+                    aria-expanded={settingsOpen}
+                    aria-controls="profile-settings"
+                    onClick={() => {
+                      setSettingsOpen(open => !open);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <Icon name="settings" size={17} />
+                    <span>Settings</span>
+                  </button>
                 </div>
               </div>
             </>
@@ -113,12 +117,14 @@ export default function App() {
           <ProfileSetupPage onComplete={() => setNeedsProfileSetup(false)} />
         ) : (
           <>
-            {tab === 'you' && <YouPage settingsOpen={settingsOpen} onCloseSettings={() => setSettingsOpen(false)} />}
+            {tab === 'today' && <TodayPage onNavigate={setTab} />}
+            {tab === 'progress' && <ProgressPage />}
             {tab === 'habits' && <HabitsPage />}
             {tab === 'workouts' && <WorkoutsPage />}
           </>
         )}
       </main>
+      {!needsProfileSetup && settingsOpen && <ProfileSettingsModal onClose={() => setSettingsOpen(false)} />}
     </div>
   );
 }

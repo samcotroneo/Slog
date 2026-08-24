@@ -143,6 +143,17 @@ export default function ActiveWorkoutCard({
   }
 
   async function handleLogSet(row) {
+    const targetSets = Number(row.targetSets);
+    const currentSetCount = logsBySessionExercise[row.id]?.length ?? 0;
+    if (!Number.isInteger(targetSets) || targetSets < 1) {
+      setError('This exercise has an invalid set target.');
+      return;
+    }
+    if (currentSetCount >= targetSets) {
+      setError(`All ${targetSets} planned sets are already logged for this exercise.`);
+      return;
+    }
+
     const draft = drafts[row.id] ?? defaultDraftForRow(row);
     const weightKg = validatePositiveNumber(draft.weightKg, 2000);
 
@@ -176,19 +187,30 @@ export default function ActiveWorkoutCard({
       payload = { reps };
     }
 
-    const nextSetNumber = (logsBySessionExercise[row.id]?.length ?? 0) + 1;
+    let didLogSet = false;
+    await db.transaction('rw', db.workoutSetLogs, async () => {
+      const loggedSetCount = await db.workoutSetLogs.where('sessionExerciseId').equals(row.id).count();
+      if (loggedSetCount >= targetSets) return;
 
-    await db.workoutSetLogs.add({
-      id: nanoid(),
-      sessionId: activeSession.id,
-      sessionExerciseId: row.id,
-      exerciseId: row.exerciseId,
-      prescriptionType: row.prescriptionType,
-      setNumber: nextSetNumber,
-      completedAt: getTimestamp(),
-      weightKg,
-      ...payload
+      await db.workoutSetLogs.add({
+        id: nanoid(),
+        sessionId: activeSession.id,
+        sessionExerciseId: row.id,
+        exerciseId: row.exerciseId,
+        prescriptionType: row.prescriptionType,
+        setNumber: loggedSetCount + 1,
+        completedAt: getTimestamp(),
+        weightKg,
+        ...payload
+      });
+      didLogSet = true;
     });
+
+    if (!didLogSet) {
+      setError(`All ${targetSets} planned sets are already logged for this exercise.`);
+      await onChange();
+      return;
+    }
 
     setError('');
     await onChange();
@@ -327,8 +349,8 @@ export default function ActiveWorkoutCard({
               </div>
 
               <div className="active-exercise-actions">
-                <button type="button" className="workout-log-set-button" onClick={() => handleLogSet(row)}>
-                  Log set {nextSet}
+                <button type="button" className="workout-log-set-button" onClick={() => handleLogSet(row)} disabled={setTargetReached}>
+                  {setTargetReached ? 'Target reached' : `Log set ${nextSet}`}
                 </button>
                 {exerciseLogs.length > 0 && (
                   <button type="button" className="btn-sm danger" onClick={() => handleDeleteLastSet(row.id)}>

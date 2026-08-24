@@ -23,6 +23,37 @@ db.version(2).stores({
   appState: 'id'
 });
 
+db.version(3).stores({
+  profile: 'id',
+  weightLogs: 'id, timestamp',
+  proteinLogs: 'id, date',
+  habits: 'id, name, active',
+  habitLogs: 'id, habitId, date',
+  exercises: 'id, name, active, createdAt, updatedAt',
+  workouts: 'id, name, active, createdAt, updatedAt',
+  workoutExercises: 'id, workoutId, exerciseId, order',
+  workoutSessions: 'id, workoutId, status, startedAt, completedAt',
+  workoutSessionExercises: 'id, sessionId, exerciseId, order',
+  workoutSetLogs: 'id, sessionId, sessionExerciseId, exerciseId, completedAt',
+  appState: 'id'
+});
+
+db.version(4).stores({
+  profile: 'id',
+  weightLogs: 'id, timestamp',
+  proteinLogs: 'id, date',
+  proteinPresets: 'id, grams, lastUsedAt',
+  habits: 'id, name, active',
+  habitLogs: 'id, habitId, date',
+  exercises: 'id, name, active, createdAt, updatedAt',
+  workouts: 'id, name, active, createdAt, updatedAt',
+  workoutExercises: 'id, workoutId, exerciseId, order',
+  workoutSessions: 'id, workoutId, status, startedAt, completedAt',
+  workoutSessionExercises: 'id, sessionId, exerciseId, order',
+  workoutSetLogs: 'id, sessionId, sessionExerciseId, exerciseId, completedAt',
+  appState: 'id'
+});
+
 /**
  * Serializes local IndexedDB into a JSON snapshot payload.
  */
@@ -30,10 +61,12 @@ export async function getLocalSnapshot() {
   const profile = await db.profile.toArray();
 
   return {
-    version: 4,
+    version: 6,
     timestamp: Date.now(),
-    profile: profile.map(({ id, heightCm, weightGoalKg, setupComplete }) => ({ id, heightCm, weightGoalKg, setupComplete })),
+    profile: profile.map(({ id, heightCm, weightGoalKg, proteinGoalGrams, setupComplete }) => ({ id, heightCm, weightGoalKg, proteinGoalGrams, setupComplete })),
     weightLogs: await db.weightLogs.toArray(),
+    proteinLogs: await db.proteinLogs.toArray(),
+    proteinPresets: await db.proteinPresets.toArray(),
     habits: await db.habits.toArray(),
     habitLogs: await db.habitLogs.toArray(),
     exercises: await db.exercises.toArray(),
@@ -55,6 +88,8 @@ export async function restoreLocalSnapshot(data) {
     [
       db.profile,
       db.weightLogs,
+      db.proteinLogs,
+      db.proteinPresets,
       db.habits,
       db.habitLogs,
       db.exercises,
@@ -68,6 +103,8 @@ export async function restoreLocalSnapshot(data) {
     async () => {
       await db.profile.clear();
       await db.weightLogs.clear();
+      await db.proteinLogs.clear();
+      await db.proteinPresets.clear();
       await db.habits.clear();
       await db.habitLogs.clear();
       await db.exercises.clear();
@@ -79,10 +116,12 @@ export async function restoreLocalSnapshot(data) {
       await db.appState.clear();
 
       if (data.profile?.length) {
-        const profile = data.profile.map(({ id, heightCm, weightGoalKg, setupComplete }) => ({ id, heightCm, weightGoalKg, setupComplete }));
+        const profile = data.profile.map(({ id, heightCm, weightGoalKg, proteinGoalGrams, setupComplete }) => ({ id, heightCm, weightGoalKg, proteinGoalGrams, setupComplete }));
         await db.profile.bulkAdd(profile);
       }
       if (data.weightLogs?.length) await db.weightLogs.bulkAdd(data.weightLogs);
+      if (data.proteinLogs?.length) await db.proteinLogs.bulkAdd(data.proteinLogs);
+      if (data.proteinPresets?.length) await db.proteinPresets.bulkAdd(data.proteinPresets);
       if (data.habits?.length) await db.habits.bulkAdd(data.habits);
       if (data.habitLogs?.length) await db.habitLogs.bulkAdd(data.habitLogs);
       if (data.exercises?.length) await db.exercises.bulkAdd(data.exercises);

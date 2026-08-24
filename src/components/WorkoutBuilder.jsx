@@ -64,7 +64,7 @@ function validateRow(row) {
   return '';
 }
 
-export default function WorkoutBuilder({ exercises, workouts, workoutExercises, onChange, onStartWorkout }) {
+export default function WorkoutBuilder({ exercises, workouts, workoutExercises, onChange, onStartWorkout, showStart = true }) {
   const [name, setName] = useState('');
   const [rows, setRows] = useState([createDraftRow()]);
   const [editingWorkoutId, setEditingWorkoutId] = useState(null);
@@ -350,9 +350,11 @@ export default function WorkoutBuilder({ exercises, workouts, workoutExercises, 
                       <span>{templateRows.length} {templateRows.length === 1 ? 'exercise' : 'exercises'}</span>
                     </div>
                     <div className="log-actions">
-                      <button type="button" className="btn-sm" onClick={() => onStartWorkout(workout.id)}>
-                        Start
-                      </button>
+                      {showStart && (
+                        <button type="button" className="btn-sm" onClick={() => onStartWorkout(workout.id)}>
+                          Start
+                        </button>
+                      )}
                       <button type="button" className="btn-sm" onClick={() => handleEditWorkout(workout)}>
                         Edit
                       </button>

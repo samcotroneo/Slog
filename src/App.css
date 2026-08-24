@@ -1,4 +1,5 @@
-:root {
+:root,
+:root[data-theme='sage-calm'] {
   --accent: #7f9d77;
   --accent-dark: #5f7f5b;
   --accent-soft: #e7efe6;
@@ -16,8 +17,115 @@
   --muted: #6b7280;
   --muted-light: #7c8793;
   --shadow: 0 10px 28px rgba(31, 41, 51, 0.055);
+  --header-bg: rgba(255, 255, 255, 0.94);
+  --backdrop: rgba(31, 41, 51, 0.28);
+  --modal-shadow: 0 24px 70px rgba(31, 41, 51, 0.18);
+  --card-shadow: 0 2px 8px rgba(31, 41, 51, 0.06);
+  --focus-ring: 0 0 0 3px rgba(127, 157, 119, 0.2);
+  --celebration: #ff7a45;
+  --celebration-shadow: rgba(255, 122, 69, 0.28);
   --radius: 16px;
   --radius-sm: 12px;
+}
+
+:root[data-theme='coffee-run'] {
+  --accent: #9c5f35;
+  --accent-dark: #734020;
+  --accent-soft: #eedcca;
+  --accent-wash: #faf2ea;
+  --leaf: #e3c3a3;
+  --blush: #efd5c4;
+  --danger: #b75245;
+  --danger-soft: #f7e4df;
+  --bg: #f3ece5;
+  --surface: #fffaf5;
+  --surface-subtle: #f7eee5;
+  --border: #deccba;
+  --border-strong: #c9af99;
+  --text: #2c1b13;
+  --muted: #705b4d;
+  --muted-light: #8b7464;
+  --shadow: 0 10px 28px rgba(60, 32, 18, 0.1);
+  --header-bg: rgba(255, 250, 245, 0.95);
+  --backdrop: rgba(30, 17, 10, 0.38);
+  --modal-shadow: 0 24px 70px rgba(60, 32, 18, 0.2);
+  --card-shadow: 0 2px 8px rgba(60, 32, 18, 0.1);
+  --focus-ring: 0 0 0 3px rgba(156, 95, 53, 0.28);
+  --celebration: #d88a4a;
+  --celebration-shadow: rgba(216, 138, 74, 0.3);
+  --radius: 16px;
+  --radius-sm: 12px;
+}
+
+:root[data-theme='midnight-iron'] {
+  --accent: #8d99a8;
+  --accent-dark: #b8c1cb;
+  --accent-soft: #242c35;
+  --accent-wash: #1a2129;
+  --leaf: #2b333d;
+  --blush: #37303a;
+  --danger: #ef7b88;
+  --danger-soft: #3c2730;
+  --bg: #0f1318;
+  --surface: #171e26;
+  --surface-subtle: #12181f;
+  --border: #2b3541;
+  --border-strong: #455364;
+  --text: #e9edf2;
+  --muted: #a0abb8;
+  --muted-light: #b4bec9;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  --header-bg: rgba(23, 30, 38, 0.94);
+  --backdrop: rgba(5, 8, 16, 0.64);
+  --modal-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.34);
+  --focus-ring: 0 0 0 3px rgba(141, 153, 168, 0.34);
+  --celebration: #ff9e44;
+  --celebration-shadow: rgba(255, 158, 68, 0.34);
+  --radius: 16px;
+  --radius-sm: 12px;
+}
+
+:root[data-theme='coffee-run'] .sync-btn,
+:root[data-theme='coffee-run'] button[type="submit"],
+:root[data-theme='coffee-run'] .workout-log-set-button {
+  padding: 12px 24px;
+  border: 1px solid #3f2114;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #5f321f 0%, #bb8155 49%, #3b1d12 51%, #bb8155 100%);
+  color: #fff;
+  font-weight: bold;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 4px 6px rgba(63, 32, 18, 0.32);
+  transition: all 0.2s ease;
+}
+
+:root[data-theme='coffee-run'] .sync-btn:hover:not(:disabled),
+:root[data-theme='coffee-run'] button[type="submit"]:hover:not(:disabled),
+:root[data-theme='coffee-run'] .workout-log-set-button:hover:not(:disabled) {
+  border-color: #7f4f31;
+  background: linear-gradient(180deg, #754125 0%, #ce976a 49%, #4c2518 51%, #ce976a 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 8px rgba(63, 32, 18, 0.38);
+}
+
+:root[data-theme='midnight-iron'] .sync-btn,
+:root[data-theme='midnight-iron'] button[type="submit"],
+:root[data-theme='midnight-iron'] .workout-log-set-button {
+  padding: 12px 24px;
+  border: 1px solid #111822;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #2c3e50 0%, #4f6d8a 49%, #1a252f 51%, #4f6d8a 100%);
+  color: #fff;
+  font-weight: bold;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 6px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s ease;
+}
+
+:root[data-theme='midnight-iron'] .sync-btn:hover:not(:disabled),
+:root[data-theme='midnight-iron'] button[type="submit"]:hover:not(:disabled),
+:root[data-theme='midnight-iron'] .workout-log-set-button:hover:not(:disabled) {
+  border-color: #7f8c9a;
+  background: linear-gradient(180deg, #34495e 0%, #5d81a3 49%, #212f3d 51%, #5d81a3 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 8px rgba(0, 0, 0, 0.4);
 }
 
 *,
@@ -48,7 +156,7 @@ body.modal-open {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--header-bg);
   border-bottom: 1px solid var(--border);
 }
 
@@ -142,6 +250,51 @@ body.modal-open {
   gap: 10px;
 }
 
+.theme-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+.theme-picker select {
+  flex: 1;
+  min-width: 0;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+}
+
+.theme-picker:hover,
+.theme-picker:focus-within {
+  border-color: var(--accent);
+}
+
+.theme-picker:hover {
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+}
+
+.theme-picker select:focus-visible {
+  outline: none;
+}
+
+.theme-picker:focus-within {
+  box-shadow: var(--focus-ring);
+}
+
 .menu-toggle {
   display: none;
   align-items: center;
@@ -222,7 +375,7 @@ body.modal-open {
   align-items: start;
   justify-items: center;
   padding: 24px;
-  background: rgba(31, 41, 51, 0.28);
+  background: var(--backdrop);
   backdrop-filter: blur(3px);
   animation: modal-fade-in 180ms ease both;
 }
@@ -235,7 +388,7 @@ body.modal-open {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
-  box-shadow: 0 24px 70px rgba(31, 41, 51, 0.18);
+  box-shadow: var(--modal-shadow);
   animation: modal-rise-in 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -355,7 +508,7 @@ body.modal-open {
 .form-card input:focus,
 .habit-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(127, 157, 119, 0.2);
+  box-shadow: var(--focus-ring);
 }
 
 .app-main {
@@ -581,9 +734,17 @@ body.modal-open {
 
 .protein-total {
   display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-top: 2px;
+}
+
+.protein-total-value {
+  display: flex;
   align-items: baseline;
   gap: 8px;
-  padding-top: 2px;
 }
 
 .protein-total strong {
@@ -596,6 +757,13 @@ body.modal-open {
 .protein-total span {
   color: var(--muted);
   font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.protein-goal {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.78rem;
   font-weight: 700;
 }
 
@@ -841,7 +1009,7 @@ body.modal-open {
 
 .unit-input:focus-within {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(127, 157, 119, 0.2);
+  box-shadow: var(--focus-ring);
 }
 
 .unit-input input {
@@ -1014,7 +1182,7 @@ button[type="submit"]:hover {
 .metric-tab.active {
   background: var(--surface);
   color: var(--accent-dark);
-  box-shadow: 0 2px 8px rgba(31, 41, 51, 0.06);
+  box-shadow: var(--card-shadow);
 }
 
 .chart-empty {
@@ -1043,6 +1211,86 @@ button[type="submit"]:hover {
 
 .list-card {
   padding: 26px;
+}
+
+.protein-progress-card .section-heading {
+  align-items: flex-start;
+}
+
+.protein-progress-card .panel-copy {
+  margin-top: 7px;
+}
+
+.protein-streak-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 22px 0 6px;
+}
+
+.protein-streak-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--accent-wash);
+}
+
+.protein-streak-stat strong {
+  color: var(--accent-dark);
+  font-size: 1.35rem;
+  font-weight: 760;
+  line-height: 1;
+}
+
+.protein-streak-stat span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.protein-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.protein-history-list li {
+  padding: 15px 0;
+  border-top: 1px solid var(--border);
+}
+
+.protein-history-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.protein-history-date,
+.protein-history-status {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.protein-history-row > strong {
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+
+.protein-history-status {
+  min-width: 88px;
+  text-align: right;
+}
+
+.protein-history-status.complete {
+  color: var(--accent-dark);
+  font-weight: 700;
 }
 
 .log-list,
@@ -1120,7 +1368,7 @@ button[type="submit"]:hover {
 
 .edit-fields input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(127, 157, 119, 0.2);
+  box-shadow: var(--focus-ring);
 }
 
 .btn-sm {
@@ -1556,8 +1804,8 @@ button[type="submit"]:hover {
 .habit-streak svg {
   width: 24px;
   height: 24px;
-  fill: #ff7a45;
-  filter: drop-shadow(0 1px 2px rgba(255, 122, 69, 0.28));
+  fill: var(--celebration);
+  filter: drop-shadow(0 1px 2px var(--celebration-shadow));
 }
 
 .habit-streak.inactive {
@@ -1675,7 +1923,7 @@ button[type="submit"]:hover {
 .workout-select:focus,
 .active-exercise-inputs input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(127, 157, 119, 0.2);
+  box-shadow: var(--focus-ring);
 }
 
 .workout-prescription-pill {
@@ -2045,6 +2293,15 @@ button[type="submit"]:hover {
     width: 100%;
   }
 
+  .theme-picker {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .theme-picker select {
+    width: 60%;
+  }
+
   .toolbar-actions .sync-label {
     display: inline;
   }
@@ -2180,6 +2437,21 @@ button[type="submit"]:hover {
 
   .habit-config-stats {
     flex-direction: row;
+  }
+
+  .protein-history-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 12px;
+  }
+
+  .protein-streak-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .protein-history-status {
+    grid-column: 1 / -1;
+    min-width: 0;
+    text-align: left;
   }
 
   .habit-config-actions {

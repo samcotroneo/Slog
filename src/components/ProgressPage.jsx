@@ -3,6 +3,7 @@ import {
   CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis
 } from 'recharts';
 import { db } from '../db.js';
+import { todayISO } from '../utils.js';
 
 const PROFILE_ID = 'user_profile';
 const METRICS = [
@@ -24,21 +25,83 @@ function formatValue(value, unit) {
   return value == null ? '—' : `${value} ${unit}`.trim();
 }
 
+function formatProteinGrams(grams) {
+  const value = Number(grams);
+  return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(2)));
+}
+
+function previousDate(date) {
+  const value = new Date(`${date}T12:00:00Z`);
+  value.setUTCDate(value.getUTCDate() - 1);
+  return value.toISOString().slice(0, 10);
+}
+
+function shiftDate(date, days) {
+  const value = new Date(`${date}T12:00:00Z`);
+  value.setUTCDate(value.getUTCDate() + days);
+  return value.toISOString().slice(0, 10);
+}
+
+function completedProteinDates(logs, goal) {
+  return new Set(
+    logs
+      .filter(log => Number(log.grams) >= goal)
+      .map(log => log.date)
+  );
+}
+
+function calculateCurrentProteinStreak(logs, goal, endDate) {
+  const completedDates = completedProteinDates(logs, goal);
+  let date = endDate;
+  let streak = 0;
+
+  while (completedDates.has(date)) {
+    streak += 1;
+    date = previousDate(date);
+  }
+
+  return streak;
+}
+
+function calculateBestProteinStreak(logs, goal) {
+  const dates = [...completedProteinDates(logs, goal)].sort();
+  let best = 0;
+  let streak = 0;
+  let previous = null;
+
+  dates.forEach(date => {
+    if (previous && previousDate(date) === previous) {
+      streak += 1;
+    } else {
+      streak = 1;
+    }
+    best = Math.max(best, streak);
+    previous = date;
+  });
+
+  return best;
+}
+
 export default function ProgressPage() {
   const [heightCm, setHeightCm] = useState('');
   const [logs, setLogs] = useState([]);
+  const [proteinGoalGrams, setProteinGoalGrams] = useState('');
+  const [proteinLogs, setProteinLogs] = useState([]);
   const [metric, setMetric] = useState('weight');
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ weightKg: '', waistCm: '' });
   const [error, setError] = useState('');
 
   async function loadData() {
-    const [profile, allLogs] = await Promise.all([
+    const [profile, allLogs, allProteinLogs] = await Promise.all([
       db.profile.get(PROFILE_ID),
-      db.weightLogs.orderBy('timestamp').toArray()
+      db.weightLogs.orderBy('timestamp').toArray(),
+      db.proteinLogs.orderBy('date').toArray()
     ]);
     setHeightCm(profile?.heightCm ?? '');
+    setProteinGoalGrams(profile?.proteinGoalGrams ?? '');
     setLogs(allLogs);
+    setProteinLogs(allProteinLogs);
   }
 
   useEffect(() => {
@@ -90,6 +153,33 @@ export default function ProgressPage() {
 
   const selectedMetric = METRICS.find(item => item.id === metric);
   const hasHeight = Number.isFinite(Number(heightCm)) && Number(heightCm) > 0;
+  const proteinGoal = Number(proteinGoalGrams);
+  const hasProteinGoal = Number.isFinite(proteinGoal) && proteinGoal > 0;
+  const today = todayISO();
+  const proteinHistory = useMemo(() => {
+    const byDate = new Map();
+
+    proteinLogs.forEach(log => {
+      const grams = Number(log.grams);
+      if (!log.date || !Number.isFinite(grams) || grams < 0) return;
+      const existing = byDate.get(log.date);
+      if (!existing || grams > existing.grams) {
+        byDate.set(log.date, { date: log.date, grams });
+      }
+    });
+
+    return [...byDate.values()].sort((a, b) => b.date.localeCompare(a.date));
+  }, [proteinLogs]);
+  const currentProteinStreak = hasProteinGoal
+    ? calculateCurrentProteinStreak(proteinHistory, proteinGoal, today)
+    : null;
+  const bestProteinStreak = hasProteinGoal
+    ? calculateBestProteinStreak(proteinHistory, proteinGoal)
+    : null;
+  const weeklyProteinLogs = proteinHistory.filter(log => log.date >= shiftDate(today, -6) && log.date <= today && log.grams > 0);
+  const weeklyProteinAverage = weeklyProteinLogs.length > 0
+    ? weeklyProteinLogs.reduce((total, log) => total + log.grams, 0) / weeklyProteinLogs.length
+    : null;
 
   return (
     <div className="page page-progress">
@@ -142,6 +232,60 @@ export default function ProgressPage() {
             </div>
           )}
         </div>
+
+      <div className="card list-card protein-progress-card">
+        <div className="section-heading">
+          <div>
+            <h2>Protein progress</h2>
+            <p className="panel-copy">
+              {hasProteinGoal
+                ? `Daily goal ${formatProteinGrams(proteinGoal)}g`
+                : 'Set a daily goal in Settings to track streaks.'}
+            </p>
+          </div>
+          <span>{proteinHistory.length ? `${proteinHistory.length} logged days` : 'No history yet'}</span>
+        </div>
+        <div className="protein-streak-stats" aria-label="Protein streak summary">
+          <div className="protein-streak-stat">
+            <strong>{currentProteinStreak ?? '—'}</strong>
+            <span>current streak</span>
+          </div>
+          <div className="protein-streak-stat">
+            <strong>{bestProteinStreak ?? '—'}</strong>
+            <span>best streak</span>
+          </div>
+          <div className="protein-streak-stat">
+            <strong>{weeklyProteinAverage == null ? '—' : `${formatProteinGrams(weeklyProteinAverage)}g`}</strong>
+            <span>7-day average (logged days)</span>
+          </div>
+        </div>
+        {proteinHistory.length === 0 ? (
+          <div className="empty-state">
+            <p>Your protein history will appear here after you log a daily total.</p>
+          </div>
+        ) : (
+          <ul className="protein-history-list">
+            {proteinHistory.map(log => {
+              const goalMet = hasProteinGoal && log.grams >= proteinGoal;
+              const goalStatus = !hasProteinGoal
+                ? 'Goal not set'
+                : goalMet
+                  ? 'Goal met'
+                  : `${formatProteinGrams(proteinGoal - log.grams)}g to goal`;
+
+              return (
+                <li key={log.date}>
+                  <div className="protein-history-row">
+                    <span className="protein-history-date">{new Date(`${log.date}T12:00:00`).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    <strong>{formatProteinGrams(log.grams)}g</strong>
+                    <span className={'protein-history-status' + (goalMet ? ' complete' : '')}>{goalStatus}</span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
 
       <div className="card list-card">
         <div className="section-heading">

@@ -130,6 +130,8 @@ export default function TodayPage({ onNavigate }) {
     [data.habitLogs]
   );
   const latestProgress = data.weightLogs.at(-1);
+  const proteinGoal = Number(data.profile?.proteinGoalGrams);
+  const hasProteinGoal = Number.isFinite(proteinGoal) && proteinGoal > 0;
   const activeWorkouts = useMemo(
     () => data.workouts.filter(workout => workout.active === 1).sort((a, b) => (b.updatedAt ?? 0) - (a.updatedAt ?? 0)),
     [data.workouts]
@@ -398,8 +400,13 @@ export default function TodayPage({ onNavigate }) {
             </button>
           </div>
           <div className="protein-total" aria-live="polite">
-            <strong>{data.proteinLog?.grams ?? 0}</strong>
-            <span>g today</span>
+            <div className="protein-total-value">
+              <strong>{formatProteinGrams(data.proteinLog?.grams ?? 0)}</strong>
+              <span>g today</span>
+            </div>
+            <span className="protein-goal">
+              {hasProteinGoal ? `Daily goal ${formatProteinGrams(proteinGoal)}g` : 'Daily goal not set'}
+            </span>
           </div>
           <div className="protein-quick-add" role="group" aria-label="Add protein">
             {PROTEIN_PRESETS.map(grams => (

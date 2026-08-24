@@ -16,20 +16,34 @@ const TABS = [
   { id: 'workouts', label: 'Workouts', icon: 'activity' }
 ];
 
-function Icon({ name, size = 18 }) {
+const THEMES = [
+  { id: 'sage-calm', label: 'Sage Calm' },
+  { id: 'coffee-run', label: 'Coffee Run' },
+  { id: 'midnight-iron', label: 'Midnight Iron' }
+];
+
+const THEME_IDS = new Set(THEMES.map(theme => theme.id));
+const THEME_ALIASES = new Map([['iron-forge', 'coffee-run']]);
+
+function normalizeTheme(value) {
+  return THEME_ALIASES.get(value) ?? value;
+}
+
+function Icon({ name, size = 18, viewBox = '0 0 24 24' }) {
   const paths = {
     user: <><circle cx="12" cy="8" r="3.25" /><path d="M5.5 19c.7-3.1 2.85-4.75 6.5-4.75s5.8 1.65 6.5 4.75" /></>,
     chart: <><path d="M4 19V5" /><path d="M4 19h16" /><path d="m7 15 3-4 3 2 4-6" /></>,
     check: <><path d="m5 12 4.2 4.2L19 6.5" /></>,
     menu: <><path d="M4 7h16M4 12h16M4 17h16" /></>,
     close: <><path d="m6 6 12 12M18 6 6 18" /></>,
+    paintbrush: <><path d="m3.4 20.6 1.3-4.4a2.9 2.9 0 0 1 .8-1.3L16.4 4a2.4 2.4 0 0 1 3.4 0l.2.2a2.4 2.4 0 0 1 0 3.4L9.1 18.5a2.9 2.9 0 0 1-1.3.8l-4.4 1.3Z" /><path d="m13.5 6.9 3.6 3.6" /><path d="m5.3 15.4 3.3 3.3" /></>,
     settings: <><circle cx="12" cy="12" r="3.5" /><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0L6.2 6.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z" /></>,
     plus: <><path d="M12 5v14M5 12h14" /></>,
     activity: <><path d="M3.5 13.5h3.1l2-5 3 9 2.1-5h6.8" /></>
   };
 
   return (
-    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg aria-hidden="true" width={size} height={size} viewBox={viewBox} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       {paths[name]}
     </svg>
   );
@@ -41,6 +55,22 @@ export default function App() {
   const [needsProfileSetup, setNeedsProfileSetup] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [persistTheme, setPersistTheme] = useState(() => {
+    const queryTheme = normalizeTheme(new URLSearchParams(window.location.search).get('theme'));
+    return !THEME_IDS.has(queryTheme);
+  });
+  const [theme, setTheme] = useState(() => {
+    const queryTheme = normalizeTheme(new URLSearchParams(window.location.search).get('theme'));
+    const fromStorage = normalizeTheme(window.localStorage.getItem('slog_theme'));
+    return [queryTheme, fromStorage].find(value => THEME_IDS.has(value)) ?? 'sage-calm';
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    if (persistTheme) {
+      window.localStorage.setItem('slog_theme', theme);
+    }
+  }, [theme, persistTheme]);
 
   useEffect(() => {
     db.profile.get('user_profile').then(profile => {
@@ -92,6 +122,25 @@ export default function App() {
                 </button>
                 <div id="toolbar-actions" className="toolbar-actions">
                   <SyncButton />
+                  <label className="theme-picker" htmlFor="theme-picker">
+                    <Icon name="paintbrush" size={17} />
+                    <span className="sr-only">Theme</span>
+                    <select
+                      id="theme-picker"
+                      aria-label="Theme"
+                      value={theme}
+                      onChange={event => {
+                        setPersistTheme(true);
+                        setTheme(event.target.value);
+                      }}
+                    >
+                      {THEMES.map(themeOption => (
+                        <option key={themeOption.id} value={themeOption.id}>
+                          {themeOption.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
                   <button
                     type="button"
                     className={'settings-toggle toolbar-settings' + (settingsOpen ? ' active' : '')}

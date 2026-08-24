@@ -12,8 +12,8 @@ import './App.css';
 const TABS = [
   { id: 'today', label: 'Today', icon: 'check' },
   { id: 'progress', label: 'Progress', icon: 'chart' },
-  { id: 'habits', label: 'Habits', icon: 'check' },
-  { id: 'workouts', label: 'Workouts', icon: 'activity' }
+  { id: 'habits', label: 'Habits', icon: 'repeat' },
+  { id: 'workouts', label: 'Workouts', icon: 'dumbbell' }
 ];
 
 const THEMES = [
@@ -24,6 +24,11 @@ const THEMES = [
 
 const THEME_IDS = new Set(THEMES.map(theme => theme.id));
 const THEME_ALIASES = new Map([['iron-forge', 'coffee-run']]);
+const THEME_CHROME_COLORS = {
+  'sage-calm': '#ffffff',
+  'coffee-run': '#fffaf5',
+  'midnight-iron': '#171e26'
+};
 
 function normalizeTheme(value) {
   return THEME_ALIASES.get(value) ?? value;
@@ -39,7 +44,8 @@ function Icon({ name, size = 18, viewBox = '0 0 24 24' }) {
     paintbrush: <><path d="m3.4 20.6 1.3-4.4a2.9 2.9 0 0 1 .8-1.3L16.4 4a2.4 2.4 0 0 1 3.4 0l.2.2a2.4 2.4 0 0 1 0 3.4L9.1 18.5a2.9 2.9 0 0 1-1.3.8l-4.4 1.3Z" /><path d="m13.5 6.9 3.6 3.6" /><path d="m5.3 15.4 3.3 3.3" /></>,
     settings: <><circle cx="12" cy="12" r="3.5" /><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0L6.2 6.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z" /></>,
     plus: <><path d="M12 5v14M5 12h14" /></>,
-    activity: <><path d="M3.5 13.5h3.1l2-5 3 9 2.1-5h6.8" /></>
+    repeat: <><path d="M21 12a9 9 0 0 0-15.3-6.4L3 8" /><path d="M3 3v5h5" /><path d="M3 12a9 9 0 0 0 15.3 6.4L21 16" /><path d="M21 21v-5h-5" /></>,
+    dumbbell: <><path d="M7 8v8M4 9.5v5M2 10.5v3M17 8v8M20 9.5v5M22 10.5v3M7 12h10" /></>
   };
 
   return (
@@ -67,6 +73,7 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_CHROME_COLORS[theme]);
     if (persistTheme) {
       window.localStorage.setItem('slog_theme', theme);
     }
@@ -102,6 +109,8 @@ export default function App() {
                       setSettingsOpen(false);
                     }}
                     type="button"
+                    aria-label={t.label}
+                    title={t.label}
                     aria-current={tab === t.id ? 'page' : undefined}
                   >
                     <Icon name={t.icon} size={17} />

@@ -51,8 +51,11 @@ npm run preview    # local preview of the production build
 ### Deploy to GitHub Pages
 
 1. Enable GitHub Pages (Settings → Pages → Source: **GitHub Actions**)
-2. Add a repository secret `VITE_GOOGLE_CLIENT_ID` with your OAuth Client ID
+2. Optionally add a repository secret `VITE_GOOGLE_CLIENT_ID` with your OAuth Client ID to enable Drive sync
 3. Push to `main` — the workflow in `.github/workflows/deploy.yml` builds and deploys automatically
+4. Open the deployed Pages URL on each device and use the browser's **Install app** or **Add to Home Screen** action
+
+The app works without the Google client ID: each person can install it and use local browser storage privately. A client ID is only needed for optional Drive sync.
 
 ## Google OAuth Setup
 

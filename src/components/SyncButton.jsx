@@ -2,8 +2,9 @@ import { useRef, useState } from 'react';
 import { syncData } from '../syncOrchestrator.js';
 import Modal from './Modal.jsx';
 
+const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
 function initTokenClient(onToken, onUnavailable) {
-  const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   if (!CLIENT_ID) {
     onUnavailable('Add VITE_GOOGLE_CLIENT_ID to enable sync.');
     return false;
@@ -23,7 +24,7 @@ function initTokenClient(onToken, onUnavailable) {
   return tokenClient;
 }
 
-export default function SyncButton() {
+function ConfiguredSyncButton() {
   const tokenClientRef = useRef(null);
   const tokenHandlerRef = useRef(null);
   const [status, setStatus] = useState('');
@@ -164,4 +165,11 @@ export default function SyncButton() {
       )}
     </>
   );
+}
+
+export default function SyncButton() {
+  if (!CLIENT_ID) {
+    return null;
+  }
+  return <ConfiguredSyncButton />;
 }

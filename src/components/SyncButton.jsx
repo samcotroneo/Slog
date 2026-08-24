@@ -2,8 +2,9 @@ import { useRef, useState } from 'react';
 import { syncData } from '../syncOrchestrator.js';
 import Modal from './Modal.jsx';
 
+const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
 function initTokenClient(onToken, onUnavailable) {
-  const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   if (!CLIENT_ID) {
     onUnavailable('Add VITE_GOOGLE_CLIENT_ID to enable sync.');
     return false;
@@ -33,6 +34,10 @@ export default function SyncButton() {
   const [encryptionPromptOpen, setEncryptionPromptOpen] = useState(false);
   const [pendingToken, setPendingToken] = useState('');
   const [encryptionError, setEncryptionError] = useState('');
+
+  if (!CLIENT_ID) {
+    return null;
+  }
 
   function finishSync(accessToken, encryptionPassphrase) {
     syncData(accessToken, encryptionPassphrase || undefined)

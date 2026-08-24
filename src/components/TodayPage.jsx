@@ -328,7 +328,13 @@ export default function TodayPage({ onNavigate }) {
               <h3>Habits</h3>
               <p>Tap each habit as you complete it.</p>
             </div>
-            <button type="button" className="btn-sm" onClick={() => onNavigate('habits')}>Configure habits</button>
+            <button type="button" className="btn-sm mobile-icon-only" onClick={() => onNavigate('habits')} aria-label="Configure habits" title="Configure habits">
+              <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3a2.4 2.4 0 0 1 2.3 1.7l.3 1a7.4 7.4 0 0 1 1.8.8l1-.4a2.4 2.4 0 0 1 2.9.9l.7 1.2a2.4 2.4 0 0 1-.5 3l-.8.7c.1.6.1 1.2 0 1.8l.8.7a2.4 2.4 0 0 1 .5 3l-.7 1.2a2.4 2.4 0 0 1-2.9.9l-1-.4a7.4 7.4 0 0 1-1.8.8l-.3 1A2.4 2.4 0 0 1 12 21a2.4 2.4 0 0 1-2.3-1.7l-.3-1a7.4 7.4 0 0 1-1.8-.8l-1 .4a2.4 2.4 0 0 1-2.9-.9l-.7-1.2a2.4 2.4 0 0 1 .5-3l.8-.7a7 7 0 0 1 0-1.8l-.8-.7a2.4 2.4 0 0 1-.5-3l.7-1.2a2.4 2.4 0 0 1 2.9-.9l1 .4a7.4 7.4 0 0 1 1.8-.8l.3-1A2.4 2.4 0 0 1 12 3Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <span className="mobile-icon-label">Configure habits</span>
+            </button>
           </div>
           {data.habits.length === 0 ? (
             <div className="checkin-empty">
@@ -412,8 +418,27 @@ export default function TodayPage({ onNavigate }) {
             {PROTEIN_PRESETS.map(grams => (
               <button key={grams} type="button" className="protein-preset" onClick={() => handleAddProtein(grams)}>+{grams}g</button>
             ))}
-            <button type="button" className="btn-sm protein-custom-toggle" onClick={() => setShowCustomProtein(current => !current)}>
-              {showCustomProtein ? 'Cancel custom' : 'Custom amount'}
+            <button
+              type="button"
+              className="btn-sm protein-custom-toggle mobile-icon-only"
+              onClick={() => setShowCustomProtein(current => !current)}
+              aria-label={showCustomProtein ? 'Cancel custom protein amount' : 'Enter custom protein amount'}
+              title={showCustomProtein ? 'Cancel custom' : 'Custom amount'}
+            >
+              <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                {showCustomProtein ? (
+                  <>
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </>
+                ) : (
+                  <>
+                    <path d="M12 5v14" />
+                    <path d="M5 12h14" />
+                  </>
+                )}
+              </svg>
+              <span className="mobile-icon-label">{showCustomProtein ? 'Cancel custom' : 'Custom amount'}</span>
             </button>
           </div>
           {data.proteinPresets.length > 0 && (
@@ -448,7 +473,16 @@ export default function TodayPage({ onNavigate }) {
               <h3>Workout</h3>
               <p>{activeSession ? 'Continue the session you have in progress.' : 'Start a saved workout when you are ready.'}</p>
             </div>
-            <button type="button" className="btn-sm" onClick={() => onNavigate('workouts')}>Manage workouts</button>
+            <button type="button" className="btn-sm mobile-icon-only" onClick={() => onNavigate('workouts')} aria-label="Manage workouts" title="Manage workouts">
+              <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 12h18" />
+                <path d="M7 8v8" />
+                <path d="M17 8v8" />
+                <path d="M3 8h2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3" />
+                <path d="M21 8h-2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2" />
+              </svg>
+              <span className="mobile-icon-label">Manage workouts</span>
+            </button>
           </div>
           {activeSession ? (
             <div className="workout-session-callout">

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { db } from '../db.js';
 import { nanoid } from '../utils.js';
 
@@ -69,6 +69,7 @@ export default function WorkoutBuilder({ exercises, workouts, workoutExercises, 
   const [rows, setRows] = useState([createDraftRow()]);
   const [editingWorkoutId, setEditingWorkoutId] = useState(null);
   const [error, setError] = useState('');
+  const builderCardRef = useRef(null);
 
   const exerciseMap = useMemo(
     () => Object.fromEntries(exercises.map(exercise => [exercise.id, exercise])),
@@ -114,6 +115,7 @@ export default function WorkoutBuilder({ exercises, workouts, workoutExercises, 
     setName(workout.name ?? '');
     setRows(templateRows.length ? templateRows : [createDraftRow()]);
     setError('');
+    builderCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   async function handleArchiveWorkout(workoutId) {
@@ -208,7 +210,7 @@ export default function WorkoutBuilder({ exercises, workouts, workoutExercises, 
 
   return (
     <div className="workout-builder-layout">
-      <form className="form-card workout-builder-card" onSubmit={handleSubmit}>
+      <form className="form-card workout-builder-card" onSubmit={handleSubmit} ref={builderCardRef}>
         <div className="section-heading">
           <h2>{editingWorkoutId ? 'Edit workout' : 'Build a workout'}</h2>
           {editingWorkoutId && (

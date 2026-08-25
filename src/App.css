@@ -2582,6 +2582,11 @@ button[type="submit"]:hover {
     padding-right: 76px;
   }
 
+  .habit-name {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   .log-list li {
     gap: 10px;
   }

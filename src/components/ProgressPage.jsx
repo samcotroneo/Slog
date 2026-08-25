@@ -186,7 +186,6 @@ export default function ProgressPage() {
       <div className="page-heading">
         <div>
           <h1>Progress</h1>
-          <p>Review the measures that help you understand your progress, and keep your private target in view.</p>
         </div>
       </div>
 

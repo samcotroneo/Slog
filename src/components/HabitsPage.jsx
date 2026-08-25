@@ -106,7 +106,6 @@ export default function HabitsPage() {
       <div className="page-heading">
         <div>
           <h1>Habits</h1>
-          <p>Tracking habits lets you stay consistent with the little things. Drink 8 glasses of water, Meditate for 15 minutes</p>
         </div>
       </div>
 

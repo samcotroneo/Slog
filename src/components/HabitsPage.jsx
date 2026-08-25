@@ -40,6 +40,8 @@ export default function HabitsPage() {
   const [newHabit, setNewHabit] = useState({ name: '', target: 1, frequency: 'daily' });
   const [habitError, setHabitError] = useState('');
   const [editingHabits, setEditingHabits] = useState(false);
+  const [editingHabit, setEditingHabit] = useState(null); // { id, name, target, frequency }
+  const [editHabitError, setEditHabitError] = useState('');
 
   const today = todayISO();
   const previousTarget = newHabit.target > 1 ? newHabit.target - 1 : null;
@@ -99,6 +101,32 @@ export default function HabitsPage() {
   async function handleArchive(id) {
     await db.habits.update(id, { active: 0 });
     await loadHabitData();
+  }
+
+  function handleEditStart(h) {
+    setEditingHabit({ id: h.id, name: h.name, target: h.target, frequency: h.frequency ?? 'daily' });
+  }
+
+  async function handleEditSave(e) {
+    e.preventDefault();
+    const target = Number(editingHabit.target);
+    if (!editingHabit.name.trim() || !Number.isInteger(target) || target < 1 || target > 20) {
+      setEditHabitError('Enter a habit name and choose a number from 1 to 20.');
+      return;
+    }
+    setEditHabitError('');
+    await db.habits.update(editingHabit.id, {
+      name: editingHabit.name.trim(),
+      target,
+      frequency: editingHabit.frequency,
+    });
+    setEditingHabit(null);
+    await loadHabitData();
+  }
+
+  function handleEditCancel() {
+    setEditingHabit(null);
+    setEditHabitError('');
   }
 
   return (
@@ -221,6 +249,100 @@ export default function HabitsPage() {
         {habits.length === 0 && <p className="muted">No active habits. Add one above.</p>}
         <ul className="habit-list">
           {habits.map(h => {
+            const isEditing = editingHabit?.id === h.id;
+            if (isEditing) {
+              const prevTarget = editingHabit.target > 1 ? editingHabit.target - 1 : null;
+              const nextTarget = editingHabit.target < 20 ? editingHabit.target + 1 : null;
+              return (
+                <li key={h.id} className="habit-config-row habit-config-row--editing">
+                  <form onSubmit={handleEditSave} className="habit-edit-form">
+                    <label className="habit-intention-field">
+                      <span className="sr-only">Habit name</span>
+                      <input
+                        value={editingHabit.name}
+                        onChange={e => setEditingHabit(f => ({ ...f, name: e.target.value }))}
+                        placeholder="Habit name"
+                        required
+                      />
+                    </label>
+                    <div className="times-picker">
+                      <div className="number-carousel" role="radiogroup" aria-label="How many times">
+                        <button
+                          type="button"
+                          className="carousel-control"
+                          onClick={() => setEditingHabit(f => ({ ...f, target: Math.max(1, f.target - 1) }))}
+                          disabled={!prevTarget}
+                          aria-label="Decrease number of times"
+                        >
+                          -
+                        </button>
+                        <div className="carousel-window">
+                          {prevTarget ? (
+                            <button
+                              type="button"
+                              role="radio"
+                              aria-checked="false"
+                              className="carousel-option adjacent"
+                              onClick={() => setEditingHabit(f => ({ ...f, target: prevTarget }))}
+                            >
+                              {prevTarget}
+                            </button>
+                          ) : <span className="carousel-option adjacent placeholder" aria-hidden="true" />}
+                          <span
+                            role="radio"
+                            aria-checked="true"
+                            className="carousel-option selected"
+                            aria-label={`${editingHabit.target} times`}
+                          >
+                            {editingHabit.target}
+                          </span>
+                          {nextTarget ? (
+                            <button
+                              type="button"
+                              role="radio"
+                              aria-checked="false"
+                              className="carousel-option adjacent"
+                              onClick={() => setEditingHabit(f => ({ ...f, target: nextTarget }))}
+                            >
+                              {nextTarget}
+                            </button>
+                          ) : <span className="carousel-option adjacent placeholder" aria-hidden="true" />}
+                        </div>
+                        <button
+                          type="button"
+                          className="carousel-control"
+                          onClick={() => setEditingHabit(f => ({ ...f, target: Math.min(20, f.target + 1) }))}
+                          disabled={!nextTarget}
+                          aria-label="Increase number of times"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <span className="times-suffix" aria-hidden="true">times</span>
+                    </div>
+                    <div className="frequency-picker" role="radiogroup" aria-label="How often">
+                      {FREQUENCIES.map(frequency => (
+                        <button
+                          key={frequency}
+                          type="button"
+                          role="radio"
+                          aria-checked={editingHabit.frequency === frequency}
+                          className={'frequency-option' + (editingHabit.frequency === frequency ? ' active' : '')}
+                          onClick={() => setEditingHabit(f => ({ ...f, frequency }))}
+                        >
+                          {frequency}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="habit-edit-actions">
+                      <button type="submit" className="btn-sm">Save</button>
+                      <button type="button" className="btn-sm" onClick={handleEditCancel}>Cancel</button>
+                    </div>
+                    {editHabitError && <p className="form-error" role="alert">{editHabitError}</p>}
+                  </form>
+                </li>
+              );
+            }
             return (
               <li key={h.id} className="habit-config-row">
                 <div className="habit-config-copy">
@@ -233,9 +355,14 @@ export default function HabitsPage() {
                 </div>
                 <div className="habit-card-actions habit-config-actions">
                   {editingHabits && (
-                   <button type="button" className="btn-sm danger" onClick={() => handleArchive(h.id)} aria-label={`Archive ${h.name}`}>
-                     Archive
-                   </button>
+                    <>
+                      <button type="button" className="btn-sm" onClick={() => handleEditStart(h)} aria-label={`Edit ${h.name}`}>
+                        Edit
+                      </button>
+                      <button type="button" className="btn-sm danger" onClick={() => handleArchive(h.id)} aria-label={`Archive ${h.name}`}>
+                        Archive
+                      </button>
+                    </>
                   )}
                 </div>
               </li>

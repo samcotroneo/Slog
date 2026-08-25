@@ -1681,8 +1681,6 @@ button[type="submit"]:hover {
 
 .habit-config-actions.habit-card-actions {
   position: static;
-  top: auto;
-  right: auto;
 }
 
 .habit-list {

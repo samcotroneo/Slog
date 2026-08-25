@@ -53,7 +53,6 @@ export default function WorkoutsPage() {
       <div className="page-heading">
         <div>
           <h1>Workouts</h1>
-          <p>Build your own lifting sessions, then review a private record of how each workout progresses over time.</p>
         </div>
       </div>
 

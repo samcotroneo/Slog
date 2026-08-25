@@ -671,14 +671,6 @@ body.modal-open {
   gap: 20px;
 }
 
-.today-date {
-  padding-bottom: 4px;
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
 .daily-checkin {
   display: flex;
   flex-direction: column;
@@ -709,6 +701,10 @@ body.modal-open {
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+}
+
+.checkin-section-heading > div {
+  min-width: 0;
 }
 
 .checkin-section-heading h3 {
@@ -816,6 +812,10 @@ body.modal-open {
   background: var(--accent-wash);
 }
 
+.protein-clear-button {
+  align-self: flex-start;
+}
+
 .protein-clear-button:disabled {
   cursor: default;
   opacity: 0.45;
@@ -877,6 +877,13 @@ body.modal-open {
 
 .today-habit-row {
   padding: 12px 0;
+}
+
+.today-workout-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .today-workout-option > div {
@@ -1392,7 +1399,7 @@ button[type="submit"]:hover {
 }
 
 .btn-sm.danger {
-  border-color: var(--blush);
+  border-color: var(--danger);
   color: var(--danger);
 }
 
@@ -1672,7 +1679,7 @@ button[type="submit"]:hover {
   font-weight: 750;
 }
 
-.habit-config-actions {
+.habit-config-actions.habit-card-actions {
   position: static;
 }
 
@@ -2401,10 +2408,6 @@ button[type="submit"]:hover {
     gap: 14px;
   }
 
-  .today-date {
-    padding-bottom: 0;
-  }
-
   .heading-actions {
     align-items: flex-start;
     width: 100%;
@@ -2447,15 +2450,6 @@ button[type="submit"]:hover {
   .checkin-section > button[type="submit"],
   .checkin-empty > button {
     width: 100%;
-  }
-
-  .checkin-section-heading {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .checkin-section-heading > div {
-    max-width: 100%;
   }
 
   .mobile-icon-only {

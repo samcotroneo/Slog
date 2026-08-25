@@ -43,6 +43,21 @@ function formatProteinGrams(grams) {
   return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(2)));
 }
 
+function ordinalSuffix(day) {
+  if (day % 10 === 1 && day % 100 !== 11) return 'st';
+  if (day % 10 === 2 && day % 100 !== 12) return 'nd';
+  if (day % 10 === 3 && day % 100 !== 13) return 'rd';
+  return 'th';
+}
+
+function formatTodayHeading(date) {
+  const parsed = new Date(`${date}T12:00:00`);
+  const weekday = parsed.toLocaleDateString(undefined, { weekday: 'long' });
+  const month = parsed.toLocaleDateString(undefined, { month: 'long' });
+  const day = parsed.getDate();
+  return `Today, ${weekday} ${day}${ordinalSuffix(day)} ${month}`;
+}
+
 export default function TodayPage({ onNavigate }) {
   const today = todayISO();
   const [data, setData] = useState({
@@ -305,10 +320,8 @@ export default function TodayPage({ onNavigate }) {
     <div className="page page-today">
       <div className="page-heading">
         <div>
-          <h1>Today</h1>
-          <p>A quick check-in for the things you want to carry through the day.</p>
+          <h1>{formatTodayHeading(today)}</h1>
         </div>
-        <span className="today-date">{new Date(`${today}T12:00:00`).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</span>
       </div>
 
       {error && <p className="form-error" role="alert">{error}</p>}
@@ -330,8 +343,8 @@ export default function TodayPage({ onNavigate }) {
             </div>
             <button type="button" className="btn-sm mobile-icon-only" onClick={() => onNavigate('habits')} aria-label="Configure habits" title="Configure habits">
               <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 3a2.4 2.4 0 0 1 2.3 1.7l.3 1a7.4 7.4 0 0 1 1.8.8l1-.4a2.4 2.4 0 0 1 2.9.9l.7 1.2a2.4 2.4 0 0 1-.5 3l-.8.7c.1.6.1 1.2 0 1.8l.8.7a2.4 2.4 0 0 1 .5 3l-.7 1.2a2.4 2.4 0 0 1-2.9.9l-1-.4a7.4 7.4 0 0 1-1.8.8l-.3 1A2.4 2.4 0 0 1 12 21a2.4 2.4 0 0 1-2.3-1.7l-.3-1a7.4 7.4 0 0 1-1.8-.8l-1 .4a2.4 2.4 0 0 1-2.9-.9l-.7-1.2a2.4 2.4 0 0 1 .5-3l.8-.7a7 7 0 0 1 0-1.8l-.8-.7a2.4 2.4 0 0 1-.5-3l.7-1.2a2.4 2.4 0 0 1 2.9-.9l1 .4a7.4 7.4 0 0 1 1.8-.8l.3-1A2.4 2.4 0 0 1 12 3Z" />
-                <circle cx="12" cy="12" r="3" />
+                <circle cx="12" cy="12" r="3.5" />
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0L6.2 6.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z" />
               </svg>
               <span className="mobile-icon-label">Configure habits</span>
             </button>
@@ -395,15 +408,6 @@ export default function TodayPage({ onNavigate }) {
               <h3>Protein</h3>
               <p>Add servings as you go and build today’s total.</p>
             </div>
-            <button
-              type="button"
-              className="btn-sm danger protein-clear-button"
-              onClick={handleClearProtein}
-              disabled={!data.proteinLog || Number(data.proteinLog.grams) <= 0}
-              aria-label="Clear today’s protein total"
-            >
-              Clear
-            </button>
           </div>
           <div className="protein-total" aria-live="polite">
             <div className="protein-total-value">
@@ -465,6 +469,15 @@ export default function TodayPage({ onNavigate }) {
               <button type="submit">Add protein</button>
             </div>
           )}
+          <button
+            type="button"
+            className="btn-sm danger protein-clear-button"
+            onClick={handleClearProtein}
+            disabled={!data.proteinLog || Number(data.proteinLog.grams) <= 0}
+            aria-label="Clear today’s protein total"
+          >
+            Clear
+          </button>
         </form>
 
         <section className="checkin-section checkin-workouts">
@@ -475,11 +488,7 @@ export default function TodayPage({ onNavigate }) {
             </div>
             <button type="button" className="btn-sm mobile-icon-only" onClick={() => onNavigate('workouts')} aria-label="Manage workouts" title="Manage workouts">
               <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 12h18" />
-                <path d="M7 8v8" />
-                <path d="M17 8v8" />
-                <path d="M3 8h2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3" />
-                <path d="M21 8h-2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2" />
+                <path d="M7 8v8M4 9.5v5M2 10.5v3M17 8v8M20 9.5v5M22 10.5v3M7 12h10" />
               </svg>
               <span className="mobile-icon-label">Manage workouts</span>
             </button>
